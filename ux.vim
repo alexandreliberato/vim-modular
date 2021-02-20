@@ -25,16 +25,6 @@ set nocompatible
 " Disable beep / flash
 set vb t_vb=
 
-" Set tabs and indents (for go)
-set ts=8
-set shiftwidth=8
-set ai sw=8
-" replace tab with spaces
-"set expandtab
-" allow cursor to move to beginning of tab
-" will interfere with soft line wrapping (set nolist)
-"set list lcs=tab:\ \ 
-
 " highlight matches when searching
 " Use C-l to clear (see key map section)
 set hlsearch
