@@ -201,4 +201,121 @@ let g:NERDTreeQuitOnOpen=1
 " dont show message: Please wait caching large directory
 let g:NERDTreeNotificationThreshold = 500
 
+"
+" Themes
+"
+Plug 'crusoexia/vim-monokai'
+Plug 'blueshirts/darcula'
+
+
+" CONFIGURE Fuzzy Search
+nnoremap <C-P> :Files<CR>
+
+
+let g:airline_theme='monochrome'
+
+" CONFIGURE NERD TREE FUNCTIONS
+let s:hidden_all = 0
+function! ToggleHiddenAll()
+    if s:hidden_all  == 0
+        let s:hidden_all = 1
+        set noshowmode
+        set noruler
+        set laststatus=0
+        set noshowcmd
+	TagbarClose
+	NERDTreeClose
+        set foldcolumn=10
+
+    else
+	set foldcolumn=0
+        let s:hidden_all = 0
+        set showmode
+        set ruler
+        set laststatus=2 
+        set showcmd
+	NERDTree
+	" NERDTree takes focus, so move focus back to the right
+	" (note: "l" is lowercase L (mapped to moving right)
+	wincmd l
+	TagbarOpen
+
+    endif
+endfunction
+
+nnoremap <silent> <leader>h :call ToggleHiddenAll()<CR>
+
+" COC
+" improve CoC usage
+set nobackup
+set nowritebackup
+set hidden
+set cmdheight=2
+set updatetime=300
+set shortmess+=c
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport') " autoimport go
+
+
+
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+" position. Coc only does snippet and additional edit on confirm.
+" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
+"if exists('*complete_info')
+"  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+"else
+"  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+"endif
+" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
+
+" Use <Tab> and <S-Tab> to navigate the completion list:
+
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" Airliner
+let g:airline_theme='powerlineish'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+set statusline+=%{exists('g:loaded_fugitive')?fugitive#statusline():''}
+
+" configure FZF and rg
+" --column: Show column number
+" --line-number: Show line number
+" --no-heading: Do not show file headings in results
+" --fixed-strings: Search term as a literal string
+" --ignore-case: Case insensitive search
+" --no-ignore: Do not respect .gitignore, etc...
+" --hidden: Search hidden files and folders
+" --follow: Follow symlinks
+" --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
+" --color: Search color options
+command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
+
 
