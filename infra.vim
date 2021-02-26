@@ -1,3 +1,8 @@
+"
+" Global Properties
+"
+let g:coc_global_extensions = ['coc-json', 'coc-git']
+
 " 
 " Utils
 "
@@ -22,4 +27,5 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'aklt/plantuml-syntax'
 Plug 'tyru/open-browser.vim'
 Plug 'weirongxu/plantuml-previewer.vim'
+
 
