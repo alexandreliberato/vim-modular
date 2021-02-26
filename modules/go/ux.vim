@@ -1,7 +1,7 @@
 " Set tabs and indents (for go) TODO how it knows that its just for GO?
-set ts=8
-set shiftwidth=8
-set ai sw=8
+"set ts=8
+"set shiftwidth=8
+"set ai sw=8
 
 " >> automations for GO
 "=======================

@@ -16,10 +16,6 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 " Plug 'tpope/vim-obsession'
 
 " Languages Support Plugin
-"  este plugin a principio serve para fazer o autocomplete
-"  para diversas linguages, POREM pode fazer o papel de 
-"  servidor de linguages LSP ou seja, auxilia a suportar
-"  mais linguagens de forma melhor no vim.
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 
