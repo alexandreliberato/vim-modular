@@ -208,8 +208,6 @@ Plug 'crusoexia/vim-monokai'
 Plug 'blueshirts/darcula'
 
 
-" CONFIGURE Fuzzy Search
-nnoremap <C-P> :Files<CR>
 
 
 let g:airline_theme='monochrome'
@@ -298,13 +296,13 @@ inoremap <silent><expr> <Tab>
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-" Airliner
+" (status) Airliner
 let g:airline_theme='powerlineish'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
 set statusline+=%{exists('g:loaded_fugitive')?fugitive#statusline():''}
 
-" configure FZF and rg
+" (search) configure FZF and rg
 " --column: Show column number
 " --line-number: Show line number
 " --no-heading: Do not show file headings in results
@@ -315,6 +313,16 @@ set statusline+=%{exists('g:loaded_fugitive')?fugitive#statusline():''}
 " --follow: Follow symlinks
 " --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
 " --color: Search color options
-command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
 
+let g:rg_command = 'rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always" -g "*.{js,kt,json,php,vim,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf,scss}" -g "!*.{min.js,swp,o,zip}" -g "!{.git,node_modules,vendor}/*" '
+command! -bang -nargs=* F call fzf#vim#grep(g:rg_command.shellescape(<q-args>), 1, <bang>0)
+
+" shortcut 
+nnoremap <C-P> :Rg<CR>
+
+if has("nvim")
+    " Escape inside a FZF terminal window should exit the terminal window
+    " rather than going into the terminal's normal mode.
+    autocmd FileType fzf tnoremap <buffer> <Esc> <Esc>
+endif
 
