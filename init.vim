@@ -3,6 +3,7 @@ source $HOME/.config/nvim/infra.vim
 source $HOME/.config/nvim/ux.vim
 source $HOME/.config/nvim/modules/java.vim
 source $HOME/.config/nvim/modules/kotlin.vim
+source $HOME/.config/nvim/modules/python.vim
 source $HOME/.config/nvim/modules/go/init.vim
 source $HOME/.config/nvim/modules/go/ux.vim
 call plug#end()

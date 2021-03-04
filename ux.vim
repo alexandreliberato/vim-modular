@@ -335,3 +335,11 @@ set tabstop=4
 set shiftwidth=4
 " On pressing tab, insert 4 spaces
 set expandtab
+
+" moving
+"
+" Mover no modo insert sem as setas
+inoremap <C-b> <left>
+inoremap <C-j> <down>
+inoremap <C-k> <up>
+inoremap <C-l> <right>
