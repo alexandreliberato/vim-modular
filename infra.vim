@@ -1,7 +1,8 @@
 "
 " Global Properties
 "
-let g:coc_global_extensions = ['coc-json', 'coc-git']
+call add(g:coc_global_extensions, 'coc-json')
+call add(g:coc_global_extensions, 'coc-git')
 
 " 
 " Utils
