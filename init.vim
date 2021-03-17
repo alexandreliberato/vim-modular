@@ -1,6 +1,7 @@
 call plug#begin('~/.local/share/nvim/plugged')
 source $HOME/.config/nvim/infra.vim
 source $HOME/.config/nvim/ux.vim
+source $HOME/.config/nvim/style.vim
 source $HOME/.config/nvim/modules/java.vim
 source $HOME/.config/nvim/modules/kotlin.vim
 source $HOME/.config/nvim/modules/python.vim
