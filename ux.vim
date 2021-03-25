@@ -352,3 +352,7 @@ inoremap <C-b> <left>
 inoremap <C-j> <down>
 inoremap <C-k> <up>
 inoremap <C-l> <right>
+
+" simple vertical split
+" vv to generate new vertical split
+nnore map <silent> vv <c-w>v</c-w></silent>
