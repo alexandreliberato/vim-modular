@@ -17,6 +17,19 @@ set incsearch		" Incremental search
 set autowrite		" Automatically save before commands like :next and :make
 set hidden		" Hide buffers when they are abandoned
 set termguicolors
+set autoread                    " Automatically reread changed files without asking me anything
+set autoindent                  
+set backspace=indent,eol,start  " Makes backspace key more powerful.
+set incsearch                   " Shows the match while typing
+set number                   " Show line numbers
+set showcmd                  " Show me what I'm typing
+set splitright               " Split vertical windows right to the current windows
+set splitbelow               " Split horizontal windows below to the current windows
+set nocursorcolumn           " speed up syntax highlighting
+set nocursorline
+set updatetime=300
+set pumheight=10             " Completion window max size
+set conceallevel=2           " Concealed text is completely hidden
 
 " Relax file compatibility restriction with original vi
 " (not necessary to set with neovim, but useful for vim)
@@ -356,3 +369,29 @@ inoremap <C-l> <right>
 " simple vertical split
 " vv to generate new vertical split
 nnore map <silent> vv <c-w>v</c-w></silent>
+
+augroup filetypedetect
+  command! -nargs=* -complete=help Help vertical belowright help <args>
+  autocmd FileType help wincmd L
+  
+  autocmd BufNewFile,BufRead .tmux.conf*,tmux.conf* setf tmux
+  autocmd BufNewFile,BufRead .nginx.conf*,nginx.conf* setf nginx
+  autocmd BufNewFile,BufRead *.hcl setf conf
+
+  autocmd BufRead,BufNewFile *.gotmpl set filetype=gotexttmpl
+  
+  autocmd BufNewFile,BufRead *.ino setlocal noet ts=4 sw=4 sts=4
+  autocmd BufNewFile,BufRead *.txt setlocal noet ts=4 sw=4
+  autocmd BufNewFile,BufRead *.md setlocal noet ts=4 sw=4
+  autocmd BufNewFile,BufRead *.html setlocal noet ts=4 sw=4
+  autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=2 tabstop=2
+  autocmd BufNewFile,BufRead *.hcl setlocal expandtab shiftwidth=2 tabstop=2
+  autocmd BufNewFile,BufRead *.sh setlocal expandtab shiftwidth=2 tabstop=2
+  autocmd BufNewFile,BufRead *.proto setlocal expandtab shiftwidth=2 tabstop=2
+  autocmd BufNewFile,BufRead *.fish setlocal expandtab shiftwidth=2 tabstop=2
+  
+  autocmd FileType go setlocal noexpandtab tabstop=4 shiftwidth=4
+  autocmd FileType yaml setlocal expandtab shiftwidth=2 tabstop=2
+  autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
+  autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2
+augroup END

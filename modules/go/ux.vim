@@ -16,8 +16,32 @@ function! s:build_go_files()
   endif
 endfunction
 
-" > TODO run :GoDebug
+"
+" Build & Run
+"
+
+" Build
 autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+" Test
 autocmd FileType go nmap <leader>t  <Plug>(go-test)
+" Run
 autocmd FileType go nmap <leader>r  <Plug>(go-run)
 
+"
+" Debug
+"
+
+" Set Breakpoint
+" Start
+" Continue
+" Next
+" Step
+" Step out
+"
+
+"
+" Navigation
+"
+
+" GoDef go to definition
+" GoPop go back from definition
