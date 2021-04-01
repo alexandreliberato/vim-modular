@@ -94,6 +94,19 @@ let g:netrw_winsize = 25
 set splitright
 set splitbelow
 
+" put quickfix window always to the bottom
+augroup quickfix
+    autocmd!
+    autocmd FileType qf wincmd J
+    autocmd FileType qf setlocal wrap
+augroup END
+
+" Enter automatically into the files directory
+autocmd BufEnter * silent! lcd %:p:h
+
+" Automatically resize screens to be equally the same
+autocmd VimResized * wincmd =
+
 " don't use arrowkeys
 noremap <Up> <NOP>
 noremap <Down> <NOP>
