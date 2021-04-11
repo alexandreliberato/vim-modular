@@ -408,3 +408,11 @@ augroup filetypedetect
   autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
   autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2
 augroup END
+
+"
+" show invisible chars, newline, tab, etc
+"
+set list
+set lcs=tab:»\ ,trail:·,eol:$
+" add colors to stand out
+highlight SpecialKey ctermfg=8 guifg=DimGrey
