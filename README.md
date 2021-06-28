@@ -13,7 +13,7 @@ NVim modular configuration with support for:
  - monokai theme
  - plantuml previewer via browser
 
-# Dependencies
+## Dependencies
 - Vim-Plug
 - 
 
