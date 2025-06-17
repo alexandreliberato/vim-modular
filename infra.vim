@@ -1,21 +1,22 @@
 "
-" Global Properties
+" GLOBAL PROPERTIES
 "
 let g:coc_global_extensions = ['coc-json', 'coc-git']
 
 " 
-" Utils
+" PLUGIN UTILS
 "
 
-" file explorer
+" File Explorer
 Plug 'scrooloose/nerdtree'
-" show git status in NERD Tree
+"
+" Show git status in NERD Tree
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
-" session support
+" Session support
 " Plug 'tpope/vim-obsession'
 
-" Languages Support Plugin
+" Programming Languages Support Plugin
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 
@@ -24,5 +25,17 @@ Plug 'aklt/plantuml-syntax'
 Plug 'tyru/open-browser.vim'
 Plug 'weirongxu/plantuml-previewer.vim'
 
+" GIT
+Plug 'tpope/vim-fugitive'
+
+" Tests
+Plug 'nvim-lua/plenary.nvim'
+Plug 'antoinemadec/FixCursorHold.nvim'
+Plug 'nvim-neotest/neotest'
+
 " Sessions
 Plug 'mhinz/vim-startify'
+
+" Markdown 
+Plug 'lukas-reineke/headlines.nvim'
+

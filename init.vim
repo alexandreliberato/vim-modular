@@ -1,3 +1,4 @@
+" LOAD ALL CONFIGURATIONS MODULES
 call plug#begin('~/.local/share/nvim/plugged')
 source $HOME/.config/nvim/infra.vim
 source $HOME/.config/nvim/ux.vim
@@ -8,6 +9,9 @@ source $HOME/.config/nvim/modules/python.vim
 source $HOME/.config/nvim/modules/go/init.vim
 source $HOME/.config/nvim/modules/go/ux.vim
 call plug#end()
+
+" CONFIGURE markdown plugin
+lua require("headlines").setup()
 
 " CONFIGURE theme monokai
 colorscheme monokai

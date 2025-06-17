@@ -16,4 +16,9 @@ let g:go_highlight_types = 1
 let g:go_highlight_operators = 1
 let gkgo_highlight_build_constraints = 1
 
+" linting/lint
+let g:go_metalinter_enabled = []
 
+let g:go_metalinter_command = 'golangci-lint'
+let g:go_metalinter_autosave = 1
+let g:go_metalinter_autosave_enabled = ['vet','revive','errcheck','staticcheck','unused','varcheck']

@@ -1,13 +1,19 @@
-" status bar
+" 
+" PLUGINS FOR BETTER USER EXPERIENCE
+"
+
+" Status Bar
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-" fuzzy search
+
+" Fuzzy Search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
 
+" TODO: understand and add comment
 syntax on
 
-" The following are commented out as they cause vim to behave a lot
+" The following can be commented out as they cause vim to behave a lot
 " differently from regular Vi. They are highly recommended though.
 set showcmd		" Show (partial) command in status line.
 set showmatch		" Show matching brackets.
@@ -44,6 +50,7 @@ set hlsearch
 
 " Line numbering
 " Toggle set to ';n' in key map section
+" TODO: add shortcut to README
 set nonumber
 
 " Disable line wrapping
@@ -83,7 +90,7 @@ set wildmenu wildmode=full
 " use just one list of errors: quickfix
 let g:go_list_type = "quickfix"
 
-" ?
+" TODO: understand and add comment
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
@@ -128,7 +135,16 @@ map <C-n> :cnext<CR>
 map <C-m> :cprevious<CR>
 nnoremap <leader>a :cclose<CR>
 
-" select file in NERDTree
+"
+" NERDTree: a filer explorer
+"
+
+" set vim-airline statusline: filename
+let g:NERDTreeStatusline = "%{exists('g:NERDTreeFileNode')&&" .
+      \ "has_key(g:NERDTreeFileNode.GetSelected(),'path')?" .
+      \ "g:NERDTreeFileNode.GetSelected().path.getLastPathComponent(0):''}"
+
+" select file in NERDTree/File Explorer
 nnoremap <silent> <leader>nf :NERDTreeFind<CR>
 
 " Shortcut to edit THIS configuration file: (e)dit (c)onfiguration
@@ -222,15 +238,14 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 
 
 " close NERDTree after a file is opened
-let g:NERDTreeQuitOnOpen=1
+let g:NERDTreeQuitOnOpen=0
 
 " dont show message: Please wait caching large directory
 let g:NERDTreeNotificationThreshold = 500
 let NERDTreeShowHidden=1
 
-" Exit Vim if NERDTree is the only window left.
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
-    \ quit | endif
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 
 " If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
 autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
