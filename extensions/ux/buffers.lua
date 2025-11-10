@@ -3,10 +3,7 @@
 -- Bufferline plugin configuration
 vim.opt.termguicolors = true
 
-
 -- Bufferline 
-local bufferline = require('bufferline')
-
 require("bufferline").setup{
     options = {
         --style_preset = bufferline.style_preset.minimal,

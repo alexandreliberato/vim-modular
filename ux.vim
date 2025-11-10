@@ -2,28 +2,23 @@
 "      UX CONF     "
 """"""""""""""""""""
 
-" MENU
-" - Install Extensions
-" - Very High Impact configurations
-"   - Vim
-"   - NERDTree
-" - High Impact configurations
-"   - Vim
-"   - Telescope
-"   - NERDTree
-" - Others
+" Stop if already loaded (prevents verbose spam under -V)
+if exists('g:loaded_ux')
+  finish
+endif
+let g:loaded_ux = 1
 
-"TODO: move extensions ux, not vim, to /extensions
-"by doing that we can have a base configuration without extensions :)
+" Defer heavy Lua plugin setup (avoid running during early filetype cycles)
+lua <<EOF
+vim.schedule(function()
+  pcall(require,'extensions.ux.buffers')
+  pcall(require,'extensions.ux.bottom_line')
+  pcall(require,'extensions.ux.search')
+end)
+EOF
 
-"
-" EXTENSIONS "
-" 
-
-" UX Extensions
-source $HOME/.config/nvim/extensions/ux/buffers.lua
-source $HOME/.config/nvim/extensions/ux/bottom_line.lua
-source $HOME/.config/nvim/extensions/ux/search.vim
+" Telescope fzf extension
+lua pcall(function() require('telescope').load_extension('fzf') end)
 
 " ----------------------------------------------------
 " Level 01 - Very High Impact
@@ -76,26 +71,12 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 " Telescope
 "
 
-
-
 " Local errors
 nnoremap <silent> <leader>d :Telescope diagnostics bufnr=0<CR>
 
 " Global errors
 nnoremap <silent> <leader>D :Telescope diagnostics<CR>
 
-" --- Remap Telescope keys ---
-" The keymaps for telescope are set using Lua
-"TODO
-"
-"searchs from the current directory to bottom
-"nnoremap <leader>f <cmd>lua require('telescope.builtin').find_files()<cr>
-
-"search all files in the git repository, TODO: new files included?
-nnoremap <leader>f <cmd>lua require('telescope.builtin').git_files()<cr>
-
-" Map to buffers
-nnoremap <leader>b <cmd>lua require('telescope.builtin').buffers()<cr>
 
 " -----------------------------------------
 " ContentSearch
@@ -146,18 +127,15 @@ autocmd FileType nerdtree nmap <buffer> l o
 
 
 " Exit Vim if NERDTree is the only window remaining in the only tab.
-"autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
 " Close the tab if NERDTree is the only window remaining in it.
-"autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
 
 " ----------------------------------------------------
 " Others
 
 
 
-
-" TODO: understand and add comment
-syntax on
 
 " The following can be commented out as they cause vim to behave a lot
 " differently from regular Vi. They are highly recommended though.
@@ -369,7 +347,7 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | exe 'NERDTree' | endi
 
 " Refresh the current folder if any changes
 autocmd BufEnter NERD_tree_* | execute 'normal R'
-au CursorHold * if exists("t:NerdTreeBufName") | call <SNR>15_refreshRoot() | endif
+au CursorHold * if exists("t:NerdTreeBufName") | call function('s:refreshRoot')() | endif
 
 " If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
 autocmd BufEnter * if winnr() == winnr('h') && bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |

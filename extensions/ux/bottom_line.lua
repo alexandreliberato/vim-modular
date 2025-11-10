@@ -21,7 +21,7 @@ local colors = {
   red          = '#5F0000',
   brightorange = '#C08A20',
   brightred    = '#AF0000',
-  cyan         = '#00DFFF',
+  cyan         = '#00DFFF'
 }
 
 -- Example: Change the background of section 'a' in normal mode to this blue
@@ -57,27 +57,9 @@ require("lualine").setup{
         always_divide_middle = true,
         always_show_tabline = true,
         globalstatus = false,
-        refresh = {
-          statusline = 1000,
-          tabline = 1000,
-          winbar = 1000,
-          refresh_time = 16, -- ~60fps
-          events = {
-            'WinEnter',
-            'BufEnter',
-            'BufWritePost',
-            'SessionLoadPost',
-            'FileChangedShellPost',
-            'VimResized',
-            'Filetype',
-            'CursorMoved',
-            'CursorMovedI',
-            'ModeChanged',
-          },
-        },
       sections = {
         lualine_a = {'mode'},
-        lualine_b = {'branch', 'diff', 'diagnostics'},
+        lualine_b = {'branch', 'diff'},
         lualine_c = {'filename'},
         lualine_x = {'encoding', 'fileformat', 'filetype'},
         lualine_y = {'progress'},
