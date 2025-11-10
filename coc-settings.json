@@ -1,8 +1,8 @@
 {
   "suggest.noselect": true,
-  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
   "go.goplsOptions": {
-    "gofumpt": true
+    "gofumpt": true,
+    "completeUnimported": true
   },
   "languageserver": {
     "golang": {
@@ -13,5 +13,9 @@
         "usePlaceholders": true
       }
     }
-  }
+  },
+  "Lua.runtime.version": "LuaJIT", 
+  "sumneko-lua.enableNvimLuaDev": true,
+  "Lua.diagnostics.globals": [ "vim" ],
+  "Lua.format.enable": true
 }

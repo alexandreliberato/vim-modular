@@ -29,7 +29,7 @@ Most used:
 
 Using leader key:
 
-;
+<space>
 
 ;bn - next buffer
 ;bd - close buffer

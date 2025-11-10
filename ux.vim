@@ -1,17 +1,141 @@
-" 
-" PLUGINS FOR BETTER USER EXPERIENCE
+""""""""""""""""""""
+"      UX CONF     "
+""""""""""""""""""""
+
+" Stop if already loaded (prevents verbose spam under -V)
+if exists('g:loaded_ux')
+  finish
+endif
+let g:loaded_ux = 1
+
+" Defer heavy Lua plugin setup (avoid running during early filetype cycles)
+lua <<EOF
+vim.schedule(function()
+  pcall(require,'extensions.ux.buffers')
+  pcall(require,'extensions.ux.bottom_line')
+  pcall(require,'extensions.ux.search')
+end)
+EOF
+
+" Telescope fzf extension
+lua pcall(function() require('telescope').load_extension('fzf') end)
+
+" ----------------------------------------------------
+" Level 01 - Very High Impact
+
+" vim: Leader key
+let mapleader=" "
+
+" nerdtree: File explorer width
+:let g:NERDTreeWinSize=45
+
+" vim: show numbers
+set number
+
+" does not exits when deleting a buffer
+command! BD bn | bd #
+
+" ----------------------------------------------------
+"  Level 02 - High Impact
+
+"
+" VIM
 "
 
-" Status Bar
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" vim: change colorscheme based on filetype
+"autocmd FileType vim colorscheme monokai
+"
+" vim: buffer title
+" TODO: bufferline plugin overwrites it?
+set titlestring=%t%m\ -\ %{v:progname}\ (%{tabpagenr()}})
 
-" Fuzzy Search
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
-Plug 'junegunn/fzf.vim'
+" vim: hide til (~) where there is no buffer lines using space instead til
+set fillchars=eob:\ 
 
-" TODO: understand and add comment
-syntax on
+" vim: left margin
+set foldcolumn=3
+set foldmethod=manual
+
+" Alternar exibição de numero de linhas (facilita na hora de copiar)
+nnoremap  :set nonumber!: set foldcolumn=0
+
+" vim: copy to clipboard
+set clipboard+=unnamedplus
+
+" vim: use <Tab> and <S-Tab> to navigate the completion list:
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+
+"
+" Telescope
+"
+
+" Local errors
+nnoremap <silent> <leader>d :Telescope diagnostics bufnr=0<CR>
+
+" Global errors
+nnoremap <silent> <leader>D :Telescope diagnostics<CR>
+
+
+" -----------------------------------------
+" ContentSearch
+
+" search content using Telescope live_grep
+nnoremap <leader>s <cmd>lua require('telescope.builtin').live_grep()<cr>
+
+"
+" NERDTree: a filer explorer
+"
+
+" Hide til (~) 
+let NERDTreeIgnore = ['\.til$', '\~$', '\.swp$']
+
+" Respect Vim's built-in wildignore settings as well
+set wildignore+=*.til,*.swp,*~
+let NERDTreeRespectWildIgnore=1
+
+function! NerdTreeToggleFind()
+  if filereadable(expand('%'))
+    NERDTreeFind
+  else
+    NERDTree
+  endif
+endfunction
+
+" Shows filename in statusline -> auto
+let g:NERDTreeStatusline = "%{exists('g:NERDTreeFileNode')&&" .
+      \ "has_key(g:NERDTreeFileNode.GetSelected(),'path')?" .
+      \ "g:NERDTreeFileNode.GetSelected().path.getLastPathComponent(0):''}"
+
+" Reveals/Selects file in NERDTree/File Explorer -> ;nf
+"nnoremap <silent> <leader>nf :NERDTreeFind<CR>
+nnoremap <silent> <leader>nf :call NerdTreeToggleFind()<CR>
+
+" Toggle NERDTree
+" Can't get <C-Space> by itself to work, so this works as Ctrl - space - space
+" https://github.com/neovim/neovim/issues/3101
+" http://stackoverflow.com/questions/7722177/how-do-i-map-ctrl-x-ctrl-o-to-ctrl-space-in-terminal-vim#answer-24550772
+"nnoremap <C-Space> :NERDTreeToggle<CR>
+"nmap <C-@> <C-Space>
+nnoremap <silent> <Space>e :NERDTreeToggle<CR>
+
+" open directory using 'L', only when in nerdtree
+"did not worked
+"nnoremap <silent> l o<CR>
+autocmd FileType nerdtree nmap <buffer> l o
+
+
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
+" Close the tab if NERDTree is the only window remaining in it.
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
+
+" ----------------------------------------------------
+" Others
+
+
+
 
 " The following can be commented out as they cause vim to behave a lot
 " differently from regular Vi. They are highly recommended though.
@@ -32,7 +156,6 @@ set showcmd                  " Show me what I'm typing
 set splitright               " Split vertical windows right to the current windows
 set splitbelow               " Split horizontal windows below to the current windows
 set nocursorcolumn           " speed up syntax highlighting
-set nocursorline
 set updatetime=300
 set pumheight=10             " Completion window max size
 set conceallevel=2           " Concealed text is completely hidden
@@ -49,7 +172,6 @@ set vb t_vb=
 set hlsearch
 
 " Line numbering
-" Toggle set to ';n' in key map section
 " TODO: add shortcut to README
 set nonumber
 
@@ -61,13 +183,14 @@ set nowrap
 set ruler
 
 "disable showmode since using vim-airline; otherwise use 'set showmode'
-set noshowmode
+"set noshowmode
 
 " file type recognition
 filetype on
 filetype plugin on
 filetype indent on
 
+" TODO: study
 set nowrap
 
 
@@ -80,15 +203,6 @@ set cursorline
 " scroll a bit horizontally when at the end of the line
 set sidescroll=6
 
-" Make it easier to work with buffers
-" http://vim.wikia.com/wiki/Easier_buffer_switching
-set hidden
-set confirm
-set autowriteall
-set wildmenu wildmode=full
-
-" use just one list of errors: quickfix
-let g:go_list_type = "quickfix"
 
 " TODO: understand and add comment
 let g:netrw_banner = 0
@@ -127,39 +241,19 @@ inoremap <Left>  <NOP>
 inoremap <Right> <NOP>
 inoremap ;; <ESC>
 
-" change the leader key from "\" to ";" ("," is also popular)
-let mapleader=";"
 
 " navigate between errors
 map <C-n> :cnext<CR>
 map <C-m> :cprevious<CR>
 nnoremap <leader>a :cclose<CR>
 
+
+
+
+
 "
-" NERDTree: a filer explorer
+" General: other nvim configs
 "
-
-" set vim-airline statusline: filename
-let g:NERDTreeStatusline = "%{exists('g:NERDTreeFileNode')&&" .
-      \ "has_key(g:NERDTreeFileNode.GetSelected(),'path')?" .
-      \ "g:NERDTreeFileNode.GetSelected().path.getLastPathComponent(0):''}"
-
-" select file in NERDTree/File Explorer
-nnoremap <silent> <leader>nf :NERDTreeFind<CR>
-
-" Shortcut to edit THIS configuration file: (e)dit (c)onfiguration
-nnoremap <silent> <leader>ec :e $MYVIMRC<CR>
-
-" Shortcut to source (reload) THIS configuration file after editing it: (s)ource (c)onfiguraiton
-nnoremap <silent> <leader>sc :source $MYVIMRC<CR>
-
-" Toggle NERDTree
-" Can't get <C-Space> by itself to work, so this works as Ctrl - space - space
-" https://github.com/neovim/neovim/issues/3101
-" http://stackoverflow.com/questions/7722177/how-do-i-map-ctrl-x-ctrl-o-to-ctrl-space-in-terminal-vim#answer-24550772
-"nnoremap <C-Space> :NERDTreeToggle<CR>
-"nmap <C-@> <C-Space>
-nnoremap <silent> <Space> :NERDTreeToggle<CR>
 
 " toggle tagbar
 nnoremap <silent> <leader>tb :TagbarToggle<CR>
@@ -170,6 +264,21 @@ nnoremap <silent> <leader>n :set number! number?<CR>
 " toggle line wrap
 nnoremap <silent> <leader>w :set wrap! wrap?<CR>
 
+" ----------------------------
+"                             " 
+"" BUFFERS                    "
+"                             "
+
+" 1)
+" Make it easier to work with buffers
+" http://vim.wikia.com/wiki/Easier_buffer_switching
+set hidden
+set confirm
+set autowriteall
+set wildmenu wildmode=full
+
+
+" 2) 
 " toggle buffer (switch between current and last buffer)
 nnoremap <silent> <leader>bb <C-^>
 
@@ -183,7 +292,7 @@ nnoremap <silent> <leader>bp :bp<CR>
 nnoremap <C-h> :bp<CR>
 
 " close buffer
-nnoremap <silent> <leader>bd :bd<CR>
+nnoremap <silent> <leader>bd :BD<CR>
 
 " kill buffer
 nnoremap <silent> <leader>bk :bd!<CR>
@@ -234,8 +343,15 @@ autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | exe 'NERDTree' | endif
 
 " Let quit work as expected if after entering :q the only window left open is NERD Tree it
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) 
+"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) 
 
+" Refresh the current folder if any changes
+autocmd BufEnter NERD_tree_* | execute 'normal R'
+au CursorHold * if exists("t:NerdTreeBufName") | call function('s:refreshRoot')() | endif
+
+" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+autocmd BufEnter * if winnr() == winnr('h') && bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
 " close NERDTree after a file is opened
 let g:NERDTreeQuitOnOpen=0
@@ -245,22 +361,18 @@ let g:NERDTreeNotificationThreshold = 500
 let NERDTreeShowHidden=1
 
 " Exit Vim if NERDTree is the only window remaining in the only tab.
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+"autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 
 " If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
 autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
-"
-" Themes
-"
-Plug 'crusoexia/vim-monokai'
-Plug 'blueshirts/darcula'
+
+" show file lines
+"let g:NERDTreeFileLines = 1
 
 
 
-
-let g:airline_theme='monochrome'
 
 " CONFIGURE NERD TREE FUNCTIONS
 let s:hidden_all = 0
@@ -342,15 +454,9 @@ inoremap <silent><expr> <Tab>
       \ <SID>check_back_space() ? "\<Tab>" :
       \ coc#refresh()
 
-" Use <Tab> and <S-Tab> to navigate the completion list:
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-" (status) Airliner
-let g:airline_theme='powerlineish'
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
-set statusline+=%{exists('g:loaded_fugitive')?fugitive#statusline():''}
+
+
 
 " (search) configure FZF and rg
 " --column: Show column number
@@ -363,18 +469,24 @@ set statusline+=%{exists('g:loaded_fugitive')?fugitive#statusline():''}
 " --follow: Follow symlinks
 " --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
 " --color: Search color options
-
 let g:rg_command = 'rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always" -g "*.{js,kt,json,php,vim,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf,scss}" -g "!*.{min.js,swp,o,zip}" -g "!{.git,node_modules,vendor}/*" '
 command! -bang -nargs=* F call fzf#vim#grep(g:rg_command.shellescape(<q-args>), 1, <bang>0)
 
-" shortcut 
+" FZF shortcut 
 nnoremap <C-P> :Rg<CR>
 
+" vim: Find files
+" (x) already using Telescope
+"nnoremap <silent> <Leader>f :Files<CR> 
+
+" fzf: escape inside fzf window
 if has("nvim")
     " Escape inside a FZF terminal window should exit the terminal window
     " rather than going into the terminal's normal mode.
     autocmd FileType fzf tnoremap <buffer> <Esc> <Esc>
 endif
+
+" TODO fzf and references
 
 " 
 " identation
@@ -424,10 +536,15 @@ augroup filetypedetect
   autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2
 augroup END
 
-"
+
+
+
+
+
+
 " show invisible chars, newline, tab, etc
-"
-set list
-set lcs=tab:»\ ,trail:·,eol:$
+"set list
+"set lcs=tab:»\ ,trail:·,eol:$
+
 " add colors to stand out
-highlight SpecialKey ctermfg=8 guifg=DimGrey
+"highlight SpecialKey ctermfg=8 guifg=DimGrey

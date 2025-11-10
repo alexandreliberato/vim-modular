@@ -1,0 +1,3 @@
+-- TODO
+-- Keymap to find Go references using vim-go and display in Telescope
+-- vim.api.nvim_set_keymap('n', '<leader>gr', '<cmd>GoReferrers<CR><cmd>Telescope loclist<CR>', { noremap = true, silent = true, desc = "Go: Find References (Telescope)" })

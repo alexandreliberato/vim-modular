@@ -1,4 +1,15 @@
-" general
+" ------------------------------------------
+" coc-go
+"
+autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
+"
+" navigate Diagnostics/Problems/Errors.
+nmap <silent> [p <Plug>(coc-diagnostic-prev)
+nmap <silent> ]p <Plug>(coc-diagnostic-next)
+
+nnoremap <silent> <leader>r :GoReferrers<CR>
+" -------------------------------------------
+" vim-go
 let g:go_fmt_fail_silently = 1
 let g:go_debug_windows = {
       \ 'vars':  'leftabove 35vnew',
@@ -6,11 +17,14 @@ let g:go_debug_windows = {
 \ }
 
 let g:go_test_show_name = 1
-let g:go_list_type = "quickfix"
 
 let g:go_autodetect_gopath = 1
-let g:go_metalinter_autosave_enabled = ['vet', 'golint']
-let g:go_metalinter_enabled = ['vet', 'golint']
+
+let g:go_metalinter_autosave = 1
+let g:go_metalinter_autosave_enabled = ['vet', 'golangci-lint']
+let g:go_metalinter_enabled = ['vet', 'golangci-lint']
+let g:go_metalinter_command = 'golangci-lint'
+let g:go_metalinter_autosave_enabled = ['vet','revive','errcheck','staticcheck','unused','varcheck']
 
 let g:go_gopls_complete_unimported = 1
 
@@ -25,7 +39,11 @@ let g:go_highlight_structs = 1
 let g:go_highlight_types = 1
 
 " same word highlight
-let g:go_auto_sameids = 1
+"let g:go_auto_sameids = 1
+
+" vim-go: use just one list of errors: quickfix
+" TODO: ! It is not working, it uses loclist even configuring to not use
+"let g:go_list_type = "quickfix"
 
 " >> automations for GO
 "=======================
@@ -53,7 +71,7 @@ autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
 " Test
 autocmd FileType go nmap <leader>t  <Plug>(go-test)
 " Run
-autocmd FileType go nmap <leader>r  <Plug>(go-run)
+"autocmd FileType go nmap <leader>r  <Plug>(go-run)
 
 "
 " Debug
@@ -75,6 +93,19 @@ nnoremap <F9> :GoDebugNext<CR>
 "
 " Navigation
 "
+nnoremap <leader>i :GoImplements<CR>
+
 
 " GoDef go to definition
 " GoPop go back from definition
+
+
+" Keymap to find Go references using vim-go and display in Telescope
+" nnoremap makes the mapping non-recursive and specific to Normal mode
+" <silent> prevents the command from being echoed on the command line
+" The <bar> character is used within a mapping to separate multiple commands
+nnoremap <silent> <leader>r :GoReferrers<CR>
+
+" 2. Define an Autocommand that runs :Telescope loclist 
+"    every time the location list window opens (BufWinEnter)
+autocmd BufWinEnter quickfix :Telescope loclist

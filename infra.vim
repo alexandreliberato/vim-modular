@@ -7,14 +7,17 @@ let g:coc_global_extensions = ['coc-json', 'coc-git']
 " PLUGIN UTILS
 "
 
+" Vim Script Linting
+Plug 'Vimjas/vint'
+
+" Syntax Highlighting
+Plug 'nvim-treesitter/nvim-treesitter'
+
 " File Explorer
 Plug 'scrooloose/nerdtree'
 "
 " Show git status in NERD Tree
 Plug 'Xuyuanp/nerdtree-git-plugin'
-
-" Session support
-" Plug 'tpope/vim-obsession'
 
 " Programming Languages Support Plugin
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -38,4 +41,10 @@ Plug 'mhinz/vim-startify'
 
 " Markdown 
 Plug 'lukas-reineke/headlines.nvim'
+
+" Outline
+Plug 'preservim/tagbar'
+
+" Colorscheme/Theme selector
+Plug 'zaldih/themery.nvim'
 
