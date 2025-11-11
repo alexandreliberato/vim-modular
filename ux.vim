@@ -2,29 +2,32 @@
 "      UX CONF     "
 """"""""""""""""""""
 
-" Stop if already loaded (prevents verbose spam under -V)
+
+
+" ------------------------------------------------------
+" Level 0
+
+" stop ux.vim loading if already loaded (prevents verbose spam under -V)
 if exists('g:loaded_ux')
   finish
 endif
 let g:loaded_ux = 1
 
-" Defer heavy Lua plugin setup (avoid running during early filetype cycles)
-lua <<EOF
-vim.schedule(function()
-  pcall(require,'extensions.ux.buffers')
-  pcall(require,'extensions.ux.bottom_line')
-  pcall(require,'extensions.ux.search')
-end)
-EOF
+" vim: Leader key
+let mapleader=" "
 
-" Telescope fzf extension
+" load ux extensions
+lua pcall(require,'extensions.ux.buffers')
+lua pcall(require,'extensions.ux.bottom_line')
+lua pcall(require,'extensions.ux.search')
+lua pcall(require,'extensions.ux.diagrams')
+
+" load Telescope extensions
 lua pcall(function() require('telescope').load_extension('fzf') end)
+lua pcall(function() require('telescope').load_extension('git_grep') end)
 
 " ----------------------------------------------------
 " Level 01 - Very High Impact
-
-" vim: Leader key
-let mapleader=" "
 
 " nerdtree: File explorer width
 :let g:NERDTreeWinSize=45
@@ -77,12 +80,6 @@ nnoremap <silent> <leader>d :Telescope diagnostics bufnr=0<CR>
 " Global errors
 nnoremap <silent> <leader>D :Telescope diagnostics<CR>
 
-
-" -----------------------------------------
-" ContentSearch
-
-" search content using Telescope live_grep
-nnoremap <leader>s <cmd>lua require('telescope.builtin').live_grep()<cr>
 
 "
 " NERDTree: a filer explorer

@@ -26,7 +26,8 @@ Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
 
 " faster fzf
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-
+" search content withing git repository
+Plug 'davvid/telescope-git-grep.nvim'
 
 
 " ----------------------------------------------------------------

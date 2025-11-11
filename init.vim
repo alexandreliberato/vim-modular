@@ -22,6 +22,7 @@ call plug#begin('~/.local/share/nvim/plugged')
     source $HOME/.config/nvim/modules/kotlin.vim
     source $HOME/.config/nvim/modules/python.vim
     source $HOME/.config/nvim/modules/elixir.vim
+    source $HOME/.config/nvim/modules/plantuml.vim
     source $HOME/.config/nvim/modules/go/init.vim   
     luafile $HOME/.config/nvim/modules/lua.lua
 call plug#end()
