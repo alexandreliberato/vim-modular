@@ -1,15 +1,28 @@
+" ===================================================================================
+" Golang UX 
+
 " ------------------------------------------
-" coc-go
+" COC-GO
 "
+
+" Organize import when a .go file is writen
 autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
-"
-" navigate Diagnostics/Problems/Errors.
+
+" Navigate Diagnostics/Problems/Errors.
+" ]p - next problem
+" [p - previous problem
 nmap <silent> [p <Plug>(coc-diagnostic-prev)
 nmap <silent> ]p <Plug>(coc-diagnostic-next)
 
+" Go to referrers
+" <leader>r
 nnoremap <silent> <leader>r :GoReferrers<CR>
+
+
 " -------------------------------------------
-" vim-go
+" VIM-GO
+
+" 
 let g:go_fmt_fail_silently = 1
 let g:go_debug_windows = {
       \ 'vars':  'leftabove 35vnew',
