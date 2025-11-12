@@ -5,3 +5,6 @@ or
 
 :map
 
+or
+
+:verbose map <leader>
