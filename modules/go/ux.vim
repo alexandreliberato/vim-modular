@@ -14,10 +14,6 @@ autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeIm
 nmap <silent> [p <Plug>(coc-diagnostic-prev)
 nmap <silent> ]p <Plug>(coc-diagnostic-next)
 
-" Go to referrers
-" <leader>r
-nnoremap <silent> <leader>r :GoReferrers<CR>
-
 
 " -------------------------------------------
 " VIM-GO
@@ -55,7 +51,6 @@ let g:go_highlight_types = 1
 "let g:go_auto_sameids = 1
 
 " vim-go: use just one list of errors: quickfix
-" TODO: ! It is not working, it uses loclist even configuring to not use
 "let g:go_list_type = "quickfix"
 
 " >> automations for GO
@@ -106,19 +101,26 @@ nnoremap <F9> :GoDebugNext<CR>
 "
 " Navigation
 "
-nnoremap <leader>i :GoImplements<CR>
 
+" Go references -> Telescope (async safe)
+function! s:GoRefsTelescope()
+  silent GoReferrers
+  " Delay to allow vim-go/gopls to fill the location list
+  " After vim-go populates the location list it opens a loclist window.
+  " We schedule a small delay, close that window, then show Telescope's loclist picker.
+  call timer_start(180, { -> execute('lclose | Telescope loclist') })
+endfunction
 
-" GoDef go to definition
-" GoPop go back from definition
+autocmd FileType go nnoremap <silent><buffer> <leader>r :call <SID>GoRefsTelescope()<CR>
 
+" Go implements -> Telescope (async safe)
+function! s:GoImplTelescope()
+  silent GoImplements
+  " Delay to allow vim-go/gopls to fill the location list
+  " After vim-go populates the location list it opens a loclist window.
+  " We schedule a small delay, close that window, then show Telescope's loclist picker.
+  call timer_start(180, { -> execute('lclose | Telescope loclist') })
+endfunction
 
-" Keymap to find Go references using vim-go and display in Telescope
-" nnoremap makes the mapping non-recursive and specific to Normal mode
-" <silent> prevents the command from being echoed on the command line
-" The <bar> character is used within a mapping to separate multiple commands
-nnoremap <silent> <leader>r :GoReferrers<CR>
+autocmd FileType go nnoremap <silent><buffer> <leader>i :call <SID>GoImplTelescope()<CR>
 
-" 2. Define an Autocommand that runs :Telescope loclist 
-"    every time the location list window opens (BufWinEnter)
-autocmd BufWinEnter quickfix :Telescope loclist

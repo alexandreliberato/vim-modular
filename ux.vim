@@ -21,10 +21,14 @@ lua pcall(require,'extensions.ux.buffers')
 lua pcall(require,'extensions.ux.bottom_line')
 lua pcall(require,'extensions.ux.search')
 lua pcall(require,'extensions.ux.diagrams')
+lua pcall(require,'extensions.ux.git')
 
 " load Telescope extensions
 lua pcall(function() require('telescope').load_extension('fzf') end)
 lua pcall(function() require('telescope').load_extension('git_grep') end)
+lua pcall(function() require('telescope').load_extension('frecency') end)
+
+
 
 " ----------------------------------------------------
 " Level 01 - Very High Impact
@@ -107,7 +111,7 @@ let g:NERDTreeStatusline = "%{exists('g:NERDTreeFileNode')&&" .
 
 " Reveals/Selects file in NERDTree/File Explorer -> ;nf
 "nnoremap <silent> <leader>nf :NERDTreeFind<CR>
-nnoremap <silent> <leader>nf :call NerdTreeToggleFind()<CR>
+nnoremap <silent> <leader>nr :call NerdTreeToggleFind()<CR>
 
 " Toggle NERDTree
 " Can't get <C-Space> by itself to work, so this works as Ctrl - space - space
@@ -211,13 +215,6 @@ let g:netrw_winsize = 25
 " open new split panes to right and below (as you probably expect)
 set splitright
 set splitbelow
-
-" put quickfix window always to the bottom
-augroup quickfix
-    autocmd!
-    autocmd FileType qf wincmd J
-    autocmd FileType qf setlocal wrap
-augroup END
 
 " Enter automatically into the files directory
 autocmd BufEnter * silent! lcd %:p:h
@@ -483,8 +480,6 @@ if has("nvim")
     autocmd FileType fzf tnoremap <buffer> <Esc> <Esc>
 endif
 
-" TODO fzf and references
-
 " 
 " identation
 "
@@ -545,3 +540,4 @@ augroup END
 
 " add colors to stand out
 "highlight SpecialKey ctermfg=8 guifg=DimGrey
+

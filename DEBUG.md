@@ -8,3 +8,7 @@ or
 or
 
 :verbose map <leader>
+
+## Mapping is not working
+- Verify source order
+- Verify mapping

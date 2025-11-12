@@ -1,6 +1,5 @@
-""""""""""""""""""""
-"    NVIM CONF     "
-""""""""""""""""""""
+" =================================================================================
+" UX PLUGINS
 
 "
 " PLUGINS FOR BETTER USER EXPERIENCE
@@ -14,7 +13,7 @@ Plug 'nvim-lualine/lualine.nvim'
 
 
 " ----------------------------------------------------------------
-" Fuzzy Search
+" Fuzzy Search: Plugins
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
 
@@ -28,18 +27,27 @@ Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 " search content withing git repository
 Plug 'davvid/telescope-git-grep.nvim'
+" search file priorization
+Plug 'nvim-telescope/telescope-frecency.nvim'
 
 
 " ----------------------------------------------------------------
-" Themes
+" Themes: Plugins
 "
 Plug 'crusoexia/vim-monokai'
 Plug 'blueshirts/darcula'
 Plug 'navarasu/onedark.nvim'
 
 
-"Tabs and Session
+"-----------------------------------------------------------------
+"Tabs/Session: Plugins
 "Plug "tiagovla/scope.nvim"
 
 " Bufferline/Tabs
 Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
+
+"-----------------------------------------------------------------
+" GIT: Plugins
+
+" Blame line
+Plug 'tveskag/nvim-blame-line'

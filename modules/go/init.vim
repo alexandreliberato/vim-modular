@@ -11,9 +11,5 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'maxandron/goplements.nvim', { 'ft': 'go' }
 
 
-" UX
-"
-" Sources
-source $HOME/.config/nvim/modules/go/ux.vim   
 
 
