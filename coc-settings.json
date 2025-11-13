@@ -1,15 +1,7 @@
 {
-<<<<<<< HEAD
-  "suggest.noselect": true,
-  "go.goplsOptions": {
-    "gofumpt": true,
-    "completeUnimported": true
-  },
-=======
   "_comment": "-------------------------------------",
   "_comment": "LANGUAGE SERVER",
 
->>>>>>> 3f7ad8c (feat: python with venv support)
   "languageserver": {
     "golang": {
       "command": "gopls",
@@ -18,16 +10,12 @@
       "initializationOptions": {
         "usePlaceholders": true
       }
-<<<<<<< HEAD
-    }
-  },
+    },
   "Lua.runtime.version": "LuaJIT", 
   "sumneko-lua.enableNvimLuaDev": true,
   "Lua.diagnostics.globals": [ "vim" ],
-  "Lua.format.enable": true
-=======
-    },
-    "python": {
+  "Lua.format.enable": true,
+  "python": {
       "command": ".venv/bin/pyright-langserver",
       "args": ["--stdio"],
       "filetypes": ["python"],
@@ -99,5 +87,4 @@
   "python.pythonPath": ".venv/bin/python",
   
   "list.source.references.defaultArgs": ["--normal"]
->>>>>>> 3f7ad8c (feat: python with venv support)
 }

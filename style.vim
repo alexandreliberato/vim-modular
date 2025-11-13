@@ -1,14 +1,18 @@
+" ===================================================================================================
+" STYLE
+"
+
+"load extensions
+lua pcall(require,'extensions.style.line_column_ident')
+
+
 "
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 
 
-
-
-" ==============================================================================================
-
-"                       "
-" SET COLORSCHEME/THEME "
+" ------------------------------------------------------------
+" Set Colorscheme/Theme
 "                       "
 
 " (x) Generic config
@@ -111,4 +115,5 @@ endfunction
 "let g:airline_theme='onedark'
 "let g:airline_theme='violet'
 "let g:airline_theme='powerlineish'
+
 
