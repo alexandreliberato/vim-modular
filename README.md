@@ -14,8 +14,13 @@ NVim modular configuration with support for:
  - plantuml previewer via browser
 
 ## Dependencies
+<<<<<<< HEAD
 - Vim-Plug
 - 
+=======
+- ripgrep
+- sharkdp/fd
+>>>>>>> 3f7ad8c (feat: python with venv support)
 
 ## How to Use
 You should clone and copy all files and directories to your nvim config path, like: /home/user/.config/nvim/
