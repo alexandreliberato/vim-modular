@@ -1,4 +1,14 @@
--- set colors for ident lines
+-- (OFF)
+-- ==================================================================================
+-- (OFF) LINE/COLUMN IDENTATION
+--
+-- You should use only one of the configs available: A, B or C
+
+-- ------------------------------------------------------------
+-- A) Rainbox: Multiple Indent Colors
+
+--[[
+---- set colors for ident lines
 local highlight = {
     "RainbowRed",
     "RainbowYellow",
@@ -28,3 +38,20 @@ vim.g.rainbow_delimiters = { highlight = highlight }
 require("ibl").setup { scope = { highlight = highlight } }
 
 hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
+]]
+
+--
+-- OR
+--
+
+-- ------------------------------------------------------------
+-- C) Simple
+
+--require("ibl").setup()
+
+--
+-- OR
+--
+
+-- ------------------------------------------------------------
+-- B)  Rainbox: Multiple Indent Colors

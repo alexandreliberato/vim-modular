@@ -3,7 +3,7 @@
 "
 
 "load extensions
-lua pcall(require,'extensions.style.line_column_ident')
+lua pcall(require,'extensions.style.identation')
 
 
 "

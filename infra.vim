@@ -22,7 +22,6 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 " Programming Languages Support Plugin
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-
 " UML 
 Plug 'aklt/plantuml-syntax'
 Plug 'tyru/open-browser.vim'
@@ -36,7 +35,7 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'antoinemadec/FixCursorHold.nvim'
 Plug 'nvim-neotest/neotest'
 
-" Sessions
+" Sessions/Home/Init
 Plug 'mhinz/vim-startify'
 
 " Markdown 
@@ -48,3 +47,8 @@ Plug 'preservim/tagbar'
 " Colorscheme/Theme selector
 Plug 'zaldih/themery.nvim'
 
+" Provids a function that return the git branch name, used by vim-startify
+Plug 'https://github.com/itchyny/vim-gitbranch'
+
+" Git sessions: reload buffers based on directory and git branch
+Plug 'olimorris/persisted.nvim'

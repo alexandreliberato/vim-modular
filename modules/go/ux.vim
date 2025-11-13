@@ -30,10 +30,23 @@ let g:go_test_show_name = 1
 let g:go_autodetect_gopath = 1
 
 let g:go_metalinter_autosave = 1
-let g:go_metalinter_autosave_enabled = ['vet', 'golangci-lint']
-let g:go_metalinter_enabled = ['vet', 'golangci-lint']
-let g:go_metalinter_command = 'golangci-lint'
-let g:go_metalinter_autosave_enabled = ['vet','revive','errcheck','staticcheck','unused','varcheck']
+
+"let g:go_metalinter_autosave_enabled = ['vet', 'golangci-lint']
+"let g:go_metalinter_enabled = ['vet', 'golangci-lint']
+"let g:go_metalinter_command = 'golangci-lint'
+"let g:go_metalinter_autosave_enabled = ['vet','revive','errcheck','staticcheck','unused','varcheck']
+
+" Disable metalinter and use gopls for diagnostics
+let g:go_metalinter_enabled = []
+let g:go_metalinter_autosave_enabled = []
+
+" Enable gopls for diagnostics
+let g:go_diagnostics_enabled = 0
+let g:go_diagnostics_level = 2
+
+" Use gopls for everything
+let g:go_def_mode = 'gopls'
+let g:go_info_mode = 'gopls'
 
 let g:go_gopls_complete_unimported = 1
 

@@ -27,7 +27,7 @@ lua pcall(require,'extensions.ux.git')
 lua pcall(function() require('telescope').load_extension('fzf') end)
 lua pcall(function() require('telescope').load_extension('git_grep') end)
 lua pcall(function() require('telescope').load_extension('frecency') end)
-
+lua pcall(function() require("telescope").load_extension("persisted") end)
 
 
 " ----------------------------------------------------
@@ -79,10 +79,10 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 "
 
 " Local errors
-nnoremap <silent> <leader>d :Telescope diagnostics bufnr=0<CR>
+"nnoremap <silent> <leader>d :Telescope diagnostics bufnr=0<CR>
 
 " Global errors
-nnoremap <silent> <leader>D :Telescope diagnostics<CR>
+"nnoremap <silent> <leader>D :Telescope diagnostics<CR>
 
 
 "
@@ -523,4 +523,30 @@ augroup END
 
 " add colors to stand out
 "highlight SpecialKey ctermfg=8 guifg=DimGrey
+
+
+" sessions
+function! GetUniqueSessionName()
+  let path = fnamemodify(getcwd(), ':~:t')
+  let path = empty(path) ? 'no-project' : path
+  let branch = gitbranch#name()
+  let branch = empty(branch) ? '' : '-' . branch
+  return substitute(path . branch, '/', '-', 'g')
+endfunction
+
+autocmd User        StartifyReady silent execute 'SLoad '  . GetUniqueSessionName()
+autocmd VimLeavePre *             silent execute 'SSave! ' . GetUniqueSessionName()
+
+" reload nvim config
+nnoremap <leader>sv :source $MYVIMRC<CR>
+
+" reload buffers automatically
+" TODO
+lua << EOF
+  require("persisted").setup {
+    autostart = true, -- Automatically start the plugin on load?
+    autoload = true,
+    use_git_branch = true,
+  }
+EOF
 
