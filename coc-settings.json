@@ -1,9 +1,15 @@
 {
+<<<<<<< HEAD
   "suggest.noselect": true,
   "go.goplsOptions": {
     "gofumpt": true,
     "completeUnimported": true
   },
+=======
+  "_comment": "-------------------------------------",
+  "_comment": "LANGUAGE SERVER",
+
+>>>>>>> 3f7ad8c (feat: python with venv support)
   "languageserver": {
     "golang": {
       "command": "gopls",
@@ -12,10 +18,86 @@
       "initializationOptions": {
         "usePlaceholders": true
       }
+<<<<<<< HEAD
     }
   },
   "Lua.runtime.version": "LuaJIT", 
   "sumneko-lua.enableNvimLuaDev": true,
   "Lua.diagnostics.globals": [ "vim" ],
   "Lua.format.enable": true
+=======
+    },
+    "python": {
+      "command": ".venv/bin/pyright-langserver",
+      "args": ["--stdio"],
+      "filetypes": ["python"],
+      "settings": {
+        "python": {
+          "analysis": {
+            "autoSearchPaths": true,
+            "useLibraryCodeForTypes": true,
+            "typeCheckingMode": "basic"
+          }
+        }
+      }
+    }
+  },
+
+  "_comment": "-------------------------------------",
+  "_comment": "GENERAL",
+
+  "suggest.noselect": true,
+
+  "_comment": "Package Manager Settings",
+  "npm.binPath": "pnpm",
+
+  "_comment": "Extension Management",
+  "coc.preferences.packageManager": "pnpm",
+  "coc.preferences.extensionUpdateCheck": "daily",
+  "coc.preferences.useQuickfixForLocations": true,
+
+  "_comment": "-------------------------------------",
+  "_comment": "GOLANG",
+
+  "go.goplsOptions": {
+    "gofumpt": true,
+    "completeUnimported": true
+  },
+
+  "_comment": "-------------------------------------",
+  "_comment": "LUA",
+
+  "Lua.runtime.version": "LuaJIT", 
+  "Lua.diagnostics.globals": [ "vim" ],
+  "Lua.format.enable": true,
+  "sumneko-lua.enableNvimLuaDev": true,
+  
+  "_comment": "-------------------------------------",
+  "_comment": "TYPESCRIPT",
+
+  "_comment": "TypeScript Settings",
+  "tsserver.npm": "pnpm",
+  "tsserver.enable": true,
+  "tsserver.useLocalTsdk": true,
+  
+  "_comment": "Linter settings",
+  "eslint.packageManager": "pnpm",
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+  
+  "_comment": "Formatter settings",
+  "prettier.packageManager": "pnpm",
+  
+  "_comment": "Language server settings",
+  "workspace.workspaceFolderCheckCwd": true,
+  
+
+  "_comment": "-------------------------------------",
+  "_comment": "PYTHON",
+
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.autoImportCompletions": true,
+  "python.pythonPath": ".venv/bin/python",
+  
+  "list.source.references.defaultArgs": ["--normal"]
+>>>>>>> 3f7ad8c (feat: python with venv support)
 }
