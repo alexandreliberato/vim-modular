@@ -3,6 +3,10 @@ NVim modular configuration with support for:
  - golang
  - java
  - kotlin
+ - lua
+ - python
+ - elixir
+ - sql
 
 ## Features
  - autocomplete

@@ -1,5 +1,5 @@
 "
 " Installs Java CoC plugin (language server, autocomplete)
 "
-call add(g:coc_global_extensions, 'coc-java')
+" (coc-java now listed in g:coc_global_extensions; removed early install call)
 

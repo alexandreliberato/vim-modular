@@ -22,6 +22,9 @@ lua pcall(require,'extensions.ux.bottom_line')
 lua pcall(require,'extensions.ux.search')
 lua pcall(require,'extensions.ux.diagrams')
 lua pcall(require,'extensions.ux.git')
+lua pcall(require,'extensions.ux.autocomplete')
+lua pcall(require,'extensions.ux.sessions')
+lua pcall(require,'extensions.ux.context')
 
 " load Telescope extensions
 lua pcall(function() require('telescope').load_extension('fzf') end)
@@ -513,14 +516,4 @@ augroup END
 
 
 
-
-
-
-
-" show invisible chars, newline, tab, etc
-"set list
-"set lcs=tab:»\ ,trail:·,eol:$
-
-" add colors to stand out
-"highlight SpecialKey ctermfg=8 guifg=DimGrey
 

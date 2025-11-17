@@ -1,7 +1,7 @@
 "
 " Installs Java CoC plugin (language server, autocomplete)
 "
-call add(g:coc_global_extensions, 'coc-pyright')
+" (coc-pyright now listed in g:coc_global_extensions; removed early install call)
 
 " References with Telescope
 nnoremap <leader>zr :call CocAction('references')<CR>
