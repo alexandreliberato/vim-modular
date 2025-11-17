@@ -51,3 +51,7 @@ Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
 
 " Blame line
 Plug 'tveskag/nvim-blame-line'
+
+" ----------------------------------------------------------------
+"  Context: Plugins
+Plug 'https://github.com/nvim-treesitter/nvim-treesitter-context'

@@ -1,4 +1,1 @@
--- installs coc lua
-vim.g.coc_global_extensions = {
-    'coc-sumneko-lua',
-}
+-- (coc-sumneko-lua handled by g:coc_global_extensions; remove startup CocInstall)

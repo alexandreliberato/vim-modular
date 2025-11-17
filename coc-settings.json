@@ -86,5 +86,9 @@
   "python.analysis.autoImportCompletions": true,
   "python.pythonPath": ".venv/bin/python",
   
-  "list.source.references.defaultArgs": ["--normal"]
+  "list.source.references.defaultArgs": ["--normal"],
+
+  "_comment": "-------------------------------------",
+  "_comment": "PYTHON",
+  "sql.database": "postgresql"
 }

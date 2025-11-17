@@ -1,7 +1,6 @@
 "
 " GLOBAL PROPERTIES
 "
-let g:coc_global_extensions = ['coc-json', 'coc-git']
 
 " 
 " PLUGIN UTILS
@@ -38,6 +37,7 @@ Plug 'nvim-neotest/neotest'
 
 " Sessions
 Plug 'mhinz/vim-startify'
+Plug 'https://github.com/stevearc/resession.nvim'
 
 " Markdown 
 Plug 'lukas-reineke/headlines.nvim'
@@ -48,3 +48,5 @@ Plug 'preservim/tagbar'
 " Colorscheme/Theme selector
 Plug 'zaldih/themery.nvim'
 
+" LSP icons in autocomplete
+Plug 'https://github.com/onsails/lspkind.nvim'

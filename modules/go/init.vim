@@ -1,6 +1,6 @@
 " Installs Golang CoC plugin (language server, autocomplete, gopls)
 "
-call add(coc_global_extensions, 'coc-go')
+" (coc-go now listed in g:coc_global_extensions; removed early install call)
 
 "
 " Installs Golang support for vim (syntax, build and debug)
