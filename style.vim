@@ -5,8 +5,6 @@
 "load extensions
 lua pcall(require,'extensions.style.line_column_ident')
 
-
-"
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 
@@ -19,14 +17,14 @@ let g:NERDTreeDirArrowCollapsible = '▾'
 set nolist "hide indents
 
 " -------------------------------------------
-"
-" (x) Blue NVim Colorscheme
-" 
-colorscheme blue
-" set matching parentheses colors
-highlight MatchParen gui=underline guibg=black guifg=NONE
-highlight CursorLine ctermbg=White
-highlight iCursorLine ctermbg=LightBlue
+" (x) Colorscheme
+
+" Default: azul
+source $HOME/.config/nvim/colors/azul.vim
+
+" Colors by language
+autocmd BufEnter *.py colorscheme nightvision
+autocmd BufEnter *.go colorscheme blue
 
 " -------------------------------------------
 "
