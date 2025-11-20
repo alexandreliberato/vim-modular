@@ -9,7 +9,7 @@ Plug 'jvirtanen/vim-hcl'
 
 " Themes
 Plug 'iruzo/matrix-nvim'
-Plug 'lukas-reineke/indent-blankline.nvim'
+"Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'https://gitlab.com/HiPhish/rainbow-delimiters.nvim'
 Plug 'https://github.com/mathofprimes/nightvision-nvim'
 
