@@ -50,3 +50,6 @@ Plug 'zaldih/themery.nvim'
 
 " LSP icons in autocomplete
 Plug 'https://github.com/onsails/lspkind.nvim'
+
+" Nvim color picker
+ Plug 'https://github.com/max397574/colortils.nvim'

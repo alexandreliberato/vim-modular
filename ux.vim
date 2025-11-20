@@ -25,6 +25,7 @@ lua pcall(require,'extensions.ux.git')
 lua pcall(require,'extensions.ux.autocomplete')
 lua pcall(require,'extensions.ux.sessions')
 lua pcall(require,'extensions.ux.context')
+lua pcall(require,'extensions.ux.color_picker')
 
 " load Telescope extensions
 lua pcall(function() require('telescope').load_extension('fzf') end)
@@ -131,9 +132,11 @@ autocmd FileType nerdtree nmap <buffer> l o
 
 
 " Exit Vim if NERDTree is the only window remaining in the only tab.
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
 " Close the tab if NERDTree is the only window remaining in it.
-autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
+" NOTE: The command above handles both cases. The two original commands were redundant and used unreliable `feedkeys`.
+" autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
 
 " ----------------------------------------------------
 " Others
@@ -516,4 +519,18 @@ augroup END
 
 
 
+" CONFIGURE markdown plugin
 
+
+lua << EOF
+vim.cmd [[highlight Headline1 guibg=#0039CD]]
+vim.cmd [[highlight Headline2 guibg=#0049CD]]
+vim.cmd [[highlight CodeBlock guibg=#1c1c1c]]
+vim.cmd [[highlight Dash guibg=#0039CD gui=bold]]
+
+require("headlines").setup{
+    markdown = {
+        headline_highlights = { "Headline1", "Headline2" },
+    },
+}
+EOF

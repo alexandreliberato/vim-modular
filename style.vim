@@ -6,6 +6,17 @@
 lua pcall(require,'extensions.style.line_column_ident')
 lua pcall(require,'extensions.style.context')
 
+" Treesitter + rainbow (required for rainbow-delimiters to work in Go)
+lua <<EOF
+local ok = pcall(require,'nvim-treesitter.configs')
+if ok then
+  require('nvim-treesitter.configs').setup{
+    ensure_installed = { 'lua','go','vim','bash','python','javascript','json','yaml','html','toml' },
+    highlight = { enable = true },
+  }
+end
+EOF
+
 
 "
 let g:NERDTreeDirArrowExpandable = '▸'

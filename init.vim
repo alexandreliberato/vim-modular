@@ -32,8 +32,7 @@ source $HOME/.config/nvim/style.vim
 source $HOME/.config/nvim/ux.vim
 source $HOME/.config/nvim/modules/go/ux.vim
 
-" CONFIGURE markdown plugin
-lua require("headlines").setup()
+
 
 
 " =====================================

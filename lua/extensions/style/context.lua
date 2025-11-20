@@ -1,4 +1,8 @@
-
+-- ===========================================================
+-- STYLE: Context
+--
+-- Context show us the current context based on the line we have focus on.
+-- It shows at the top of the window the line that starts the contex, ex: function signature.
 
 --Use the highlight groups TreesitterContextBottom and/or TreesitterContextLineNumberBottom to change the highlight of the last line of the context window. By default it links to NONE. However, you can use this to create a border by applying an underline highlight, e.g, for an underline across the screen:
 local function SetTreeSitterHighlights()
