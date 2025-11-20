@@ -12,7 +12,7 @@ let g:NERDTreeDirArrowCollapsible = '▾'
 
 " ------------------------------------------------------------
 " Set Colorscheme/Theme
-"                       "
+"
 
 " (x) Generic config
 set nolist "hide indents

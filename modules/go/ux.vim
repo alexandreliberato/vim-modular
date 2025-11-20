@@ -74,12 +74,12 @@ let g:go_fmt_command = "goimports"
 " Build & Run
 "
 
-" Build
-autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+" (off) Build
+autocmd FileType go nmap <leader>gb :<C-u>call <SID>build_go_files()<CR>
 " Test
-autocmd FileType go nmap <leader>t  <Plug>(go-test)
+autocmd FileType go nmap <leader>gt  <Plug>(go-test)
 " Run
-"autocmd FileType go nmap <leader>r  <Plug>(go-run)
+autocmd FileType go nmap <leader>gr  <Plug>(go-run)
 
 "
 " Debug
