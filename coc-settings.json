@@ -16,7 +16,7 @@
   "Lua.diagnostics.globals": [ "vim" ],
   "Lua.format.enable": true,
   "python": {
-      "command": ".venv/bin/pyright-langserver",
+      "command": "bin/pyright-langserver",
       "args": ["--stdio"],
       "filetypes": ["python"],
       "settings": {
@@ -84,7 +84,7 @@
 
   "python.analysis.typeCheckingMode": "basic",
   "python.analysis.autoImportCompletions": true,
-  "python.pythonPath": ".venv/bin/python",
+  "python.pythonPath": "bin/python",
   
   "list.source.references.defaultArgs": ["--normal"],
 
