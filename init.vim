@@ -21,6 +21,9 @@ call plug#begin('~/.local/share/nvim/plugged')
     luafile $HOME/.config/nvim/modules/lua.lua
 call plug#end()
 
+" Configure barbar.nvim immediately after it's loaded.
+" This ensures it's ready before any autocommands use it.
+lua pcall(require,'extensions.ux.buffers')
 
 " -----------------------------------------------
 " Run Language Extensions
@@ -41,4 +44,21 @@ lua require("headlines").setup()
 " =====================================
 "silent call Dark()
 
-autocmd VimEnter * wincmd p
+" Create a single startup function to run after everything is loaded.
+function! s:FinalStartup()
+  " 1. Open NERDTree if no files were provided.
+  if argc() == 0 && !exists("s:std_in")
+    NERDTree
+  endif
+
+  " 2. Move cursor to the main window.
+  wincmd p
+
+  " 3. Force barbar.nvim to redraw. This is now safe because this entire
+  "    function is deferred until after all plugins are fully loaded.
+  lua pcall(require'barbar'.force_redraw)
+endfunction
+
+" Defer the entire startup sequence until Neovim is idle.
+" This is the most reliable way to avoid race conditions.
+autocmd User PlugLoaded call timer_start(1, { -> s:FinalStartup() })

@@ -55,7 +55,7 @@ require("lualine").setup{
         },
         ignore_focus = {},
         always_divide_middle = true,
-        always_show_tabline = true,
+        --always_show_tabline = true,
         globalstatus = false,
       sections = {
         lualine_a = {'mode'},

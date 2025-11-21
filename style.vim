@@ -2,6 +2,10 @@
 " STYLE
 "
 
+" This autocommand is causing startup errors because it runs before barbar.nvim is ready.
+" The s:FinalStartup function in init.vim will handle the redraw correctly.
+" autocmd ColorScheme * lua require'barbar'.force_redraw()
+
 "load extensions
 lua pcall(require,'extensions.style.line_column_ident')
 lua pcall(require,'extensions.style.context')
@@ -13,6 +17,22 @@ let g:NERDTreeDirArrowCollapsible = '▾'
 " ------------------------------------------------------------
 " Set Colorscheme/Theme
 "
+
+" Manually set barbar's highlights to match the desired 'blue' theme.
+" This is more robust than linking, as it prevents other themes from overwriting it.
+augroup BarbarThemeSync
+  autocmd!
+  "more green
+  autocmd ColorScheme blue
+    \ highlight BufferCurrent guifg=#000087 guibg=#5fffff |
+    \ highlight BufferInactive guifg=#000087 guibg=#008787 |
+    \ highlight BufferVisible guifg=#000087 guibg=#008787
+  "    more blue
+" autocmd ColorScheme blue
+"    \ highlight BufferCurrent guifg=#ffffff guibg=#005faf |
+"    \ highlight BufferInactive guifg=#5fffff guibg=#000087 |
+"    \ highlight BufferVisible guifg=#5fffff guibg=#000087
+augroup END
 
 " (x) Generic config
 set nolist "hide indents
