@@ -34,9 +34,10 @@ Plug 'nvim-telescope/telescope-frecency.nvim'
 " ----------------------------------------------------------------
 " Themes: Plugins
 "
-Plug 'crusoexia/vim-monokai'
-Plug 'blueshirts/darcula'
-Plug 'navarasu/onedark.nvim'
+"Plug 'crusoexia/vim-monokai'
+"Plug 'blueshirts/darcula'
+"Plug 'navarasu/onedark.nvim'
+Plug 'https://github.com/mathofprimes/nightvision-nvim'
 
 
 "-----------------------------------------------------------------
@@ -44,7 +45,9 @@ Plug 'navarasu/onedark.nvim'
 "Plug "tiagovla/scope.nvim"
 
 " Bufferline/Tabs
-Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
+"Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
+Plug 'nvim-tree/nvim-web-devicons' " OPTIONAL: for file icons
+Plug 'romgrk/barbar.nvim'
 
 "-----------------------------------------------------------------
 " GIT: Plugins

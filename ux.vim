@@ -17,7 +17,7 @@ let g:loaded_ux = 1
 let mapleader=" "
 
 " load ux extensions
-lua pcall(require,'extensions.ux.buffers')
+" lua pcall(require,'extensions.ux.buffers') " This line has been moved to init.vim
 lua pcall(require,'extensions.ux.bottom_line')
 lua pcall(require,'extensions.ux.search')
 lua pcall(require,'extensions.ux.diagrams')
@@ -336,8 +336,9 @@ tnoremap <C-x> <C-\><C-n><C-w>q
 
 
 " Auto start NERD tree if no files are specified
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | exe 'NERDTree' | endif
+" This logic has been moved to a new s:FinalStartup() function in init.vim.
+" autocmd StdinReadPre * let s:std_in=1
+" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | exe 'NERDTree' | endif
 
 " Let quit work as expected if after entering :q the only window left open is NERD Tree it
 "autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) 
@@ -399,6 +400,13 @@ function! ToggleHiddenAll()
 
     endif
 endfunction
+
+" This autocommand is no longer needed as the startup logic is now
+" correctly handled and deferred in init.vim.
+" augroup BarbarNerdTree
+"   autocmd!
+"   autocmd FileType nerdtree lua require'barbar'.force_redraw()
+" augroup END
 
 nnoremap <silent> <leader>h :call ToggleHiddenAll()<CR>
 
@@ -513,6 +521,11 @@ augroup filetypedetect
   autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
   autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2
 augroup END
+
+
+" This has been moved to style.vim to ensure it loads at the correct time.
+" autocmd ColorScheme * lua require'barbar'.force_redraw()
+
 
 
 
