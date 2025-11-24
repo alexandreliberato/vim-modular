@@ -3,6 +3,9 @@
 "
 " (coc-pyright now listed in g:coc_global_extensions; removed early install call)
 
+" Integration with uv tool
+Plug 'benomahony/uv.nvim',
+
 " References with Telescope
 nnoremap <leader>zr :call CocAction('references')<CR>
 

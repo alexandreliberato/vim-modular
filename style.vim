@@ -44,8 +44,10 @@ set nolist "hide indents
 source $HOME/.config/nvim/colors/azul.vim
 
 " Colors by language
-autocmd BufEnter *.py colorscheme nightvision
-autocmd BufEnter *.go colorscheme blue
+autocmd BufEnter *.py  colorscheme nightvision
+autocmd BufEnter *.go  colorscheme blue
+autocmd BufEnter *.vim colorscheme peachpuff
+autocmd BufEnter *.go  colorscheme blue
 
 " -------------------------------------------
 "

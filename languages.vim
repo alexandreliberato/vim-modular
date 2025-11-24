@@ -12,3 +12,6 @@ let g:coc_global_extensions = [
 	\ 'coc-sql',
 	\ 'coc-sumneko-lua'
 	\ ]
+
+
+
