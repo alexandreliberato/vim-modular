@@ -52,6 +52,9 @@ command! BD bn | bd #
 " VIM
 "
 
+" write using leader
+nnoremap <silent> <leader>w :w<CR>
+
 " vim: change colorscheme based on filetype
 "autocmd FileType vim colorscheme monokai
 "
@@ -259,7 +262,7 @@ nnoremap <silent> <leader>tb :TagbarToggle<CR>
 nnoremap <silent> <leader>n :set number! number?<CR>
 
 " toggle line wrap
-nnoremap <silent> <leader>w :set wrap! wrap?<CR>
+" nnoremap <silent> <leader>w :set wrap! wrap?<CR>
 
 " ----------------------------
 "                             " 

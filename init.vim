@@ -28,6 +28,7 @@ lua pcall(require,'extensions.ux.buffers')
 " -----------------------------------------------
 " Run Language Extensions
 source $HOME/.config/nvim/languages.vim
+lua require("uv").setup()
 
 " -----------------------------------------------
 " Run UX and Style extensions
@@ -38,11 +39,6 @@ source $HOME/.config/nvim/modules/go/ux.vim
 " CONFIGURE markdown plugin
 lua require("headlines").setup()
 
-
-" =====================================
-" Colorscheme: initialize
-" =====================================
-"silent call Dark()
 
 " Create a single startup function to run after everything is loaded.
 function! s:FinalStartup()
