@@ -50,3 +50,6 @@ Plug 'zaldih/themery.nvim'
 
 " LSP icons in autocomplete
 Plug 'https://github.com/onsails/lspkind.nvim'
+
+" NVIM LSP: Native
+Plug 'https://github.com/neovim/nvim-lspconfig'

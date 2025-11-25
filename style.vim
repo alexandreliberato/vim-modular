@@ -44,10 +44,11 @@ set nolist "hide indents
 source $HOME/.config/nvim/colors/azul.vim
 
 " Colors by language
-autocmd BufEnter *.py  colorscheme nightvision
-autocmd BufEnter *.go  colorscheme blue
-autocmd BufEnter *.vim colorscheme peachpuff
-autocmd BufEnter *.go  colorscheme blue
+autocmd BufWinEnter,Filetype python  colorscheme nightvision
+autocmd BufWinEnter,Filetype golang  colorscheme blue
+autocmd BufWinEnter,Filetype vim     colorscheme peachpuff
+autocmd BufWinEnter,Filetype lua     colorscheme peachpuff
+autocmd BufWinEnter,Filetype elixir  colorscheme rose-pine
 
 " -------------------------------------------
 "
@@ -137,4 +138,7 @@ endfunction
 "let g:airline_theme='violet'
 "let g:airline_theme='powerlineish'
 
+
+" show numbers when in code files
+autocmd BufWinEnter *.go,*.py,*.js,*.ex setlocal number
 

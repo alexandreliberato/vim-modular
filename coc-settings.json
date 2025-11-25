@@ -3,6 +3,12 @@
   "_comment": "LANGUAGE SERVER",
 
   "languageserver": {
+    "elixir": {
+      "command": "expert",
+      "args": ["--stdio"],
+      "filetypes": ["ex", "elixir", "eelixir", "heex"],
+      "rootPatterns": ["mix.exs", ".git"]
+    },
     "golang": {
       "command": "gopls",
       "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
