@@ -28,7 +28,6 @@ lua pcall(require,'extensions.ux.buffers')
 " -----------------------------------------------
 " Run Language Extensions
 source $HOME/.config/nvim/languages.vim
-lua require("uv").setup()
 
 " -----------------------------------------------
 " Run UX and Style extensions
@@ -55,6 +54,12 @@ function! s:FinalStartup()
   lua pcall(require'barbar'.force_redraw)
 endfunction
 
+" Create a function to set up the uv.nvim plugin.
+function! s:SetupUV()
+  lua require("uv").setup()
+endfunction
+
 " Defer the entire startup sequence until Neovim is idle.
 " This is the most reliable way to avoid race conditions.
 autocmd User PlugLoaded call timer_start(1, { -> s:FinalStartup() })
+autocmd User PlugLoaded call timer_start(1, { -> s:SetupUV() })

@@ -1,0 +1,13 @@
+
+-- Configure native neovim lsp client + lspconfig plugin
+-- vim.lsp.config('expert', {
+--   cmd = { 'expert', '--stdio' },
+--   root_markers = { 'mix.exs', '.git' },
+--   filetypes = {'ex', 'elixir', 'eelixir', 'heex' },
+-- })
+-- 
+-- vim.lsp.enable('expert')
+-- 
+-- vim.lsp.config('elixir', {
+--   cmd = { "expert" } -- Or the full path to your expert executable
+-- })

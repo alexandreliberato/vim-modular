@@ -12,3 +12,5 @@ Plug 'iruzo/matrix-nvim'
 "Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'https://gitlab.com/HiPhish/rainbow-delimiters.nvim'
 
+" Installs rose-pine colorscheme
+Plug 'https://github.com/rose-pine/neovim'
