@@ -85,7 +85,10 @@
   "python.analysis.typeCheckingMode": "basic",
   "python.analysis.autoImportCompletions": true,
   "python.pythonPath": ".venv/bin/python",
-  
+  "_comment":
+  "// adds the folder that contains this file to sys.path",
+  "python.analysis.extraPaths": ["./"],                       
+
   "list.source.references.defaultArgs": ["--normal"],
 
   "_comment": "-------------------------------------",
