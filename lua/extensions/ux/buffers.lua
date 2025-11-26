@@ -24,7 +24,13 @@ vim.opt.termguicolors = true
 --         },
 -- }
 
+local function getLastFromPath(path)
+    local last = path:match("([^/]+)$")
+    return last
+end
 
+local rootDirectory = require("radix").get_root_dir(vim.fn.getcwd())
+local sidebarText = '| File Explorer | ' .. '>> ' ..string.upper(getLastFromPath(rootDirectory)) .. ' <<'
 
 vim.g.barbar_auto_setup = false -- disable auto-setup
 require'barbar'.setup {
@@ -46,7 +52,7 @@ require'barbar'.setup {
   -- Add this block to create an offset for NERDTree
   sidebar_filetypes = {
     -- Set a text to appear in the sidebar section.
-    nerdtree = {text = 'File Explorer'},
+    nerdtree = {text = sidebarText},
   },
 
   -- A buffer to this direction will be focused (if it exists) when closing the current buffer.
@@ -56,14 +62,19 @@ require'barbar'.setup {
   -- Hide inactive buffers and file extensions. Other options are `alternate`, `current`, and `visible`.
   hide = {extensions = false, inactive = false},
 
-  -- Disable highlighting alternate buffers
-  highlight_alternate = false,
+  -- ENable highlighting alternate buffers
+  highlight_alternate = true,
 
   -- Disable highlighting file icons in inactive buffers
   highlight_inactive_file_icons = false,
 
   -- Enable highlighting visible buffers
   highlight_visible = true,
+highlight = {
+    current  = {fg = '#cacfd6ff', bg = '#5fffff', bold = true},
+    visible  = {fg = '#a0a8d0', bg = '#1f2335'},
+    inactive = {fg = '#6c7394', bg = '#16191f'},
+  },
 
   icons = {
     -- Configure the base icons on the bufferline.
@@ -86,7 +97,7 @@ require'barbar'.setup {
     filetype = {
       -- Sets the icon's highlight group.
       -- If false, will use nvim-web-devicons colors
-      custom_colors = false,
+      custom_colors = true,
 
       -- Requires `nvim-web-devicons` if `true`
       enabled = true,
@@ -105,7 +116,7 @@ require'barbar'.setup {
     -- 'tabline' will make barbar use the standard TabLine highlights, making it
     -- compatible with any colorscheme.
     -- This is being removed to fix the missing tabline and re-enable sidebar offsets.
-    -- preset = 'tabline',
+    --preset = 'tabline',
 
     -- Configure the icons on the bufferline based on the visibility of a buffer.
     -- Supports all the base icon options, plus `modified` and `pinned`.
@@ -162,3 +173,51 @@ require'barbar'.setup {
 -- Underline indicator
 
 -- Alternate styling
+
+
+local function apply_barbar_highlights()
+  local link_sets = {
+    TabLineSel = {
+      'BufferCurrent', 'BufferCurrentIndex', 'BufferCurrentMod', 'BufferCurrentSign',
+      'BufferCurrentTarget', 'BufferCurrentIcon', 'BufferCurrentNumber',
+      'BufferCurrentHINT', 'BufferCurrentINFO', 'BufferCurrentWARN', 'BufferCurrentERROR',
+      'BufferDefaultCurrent', 'BufferDefaultCurrentIndex', 'BufferDefaultCurrentMod',
+      'BufferDefaultCurrentSign', 'BufferDefaultCurrentTarget', 'BufferDefaultCurrentIcon',
+      'BufferDefaultCurrentNumber', 'BufferDefaultCurrentHINT', 'BufferDefaultCurrentINFO',
+      'BufferDefaultCurrentWARN', 'BufferDefaultCurrentERROR',
+    },
+    TabLine = {
+      'BufferVisible', 'BufferVisibleIndex', 'BufferVisibleMod', 'BufferVisibleSign',
+      'BufferVisibleTarget', 'BufferVisibleIcon', 'BufferVisibleNumber',
+      'BufferVisibleHINT', 'BufferVisibleINFO', 'BufferVisibleWARN', 'BufferVisibleERROR',
+      'BufferDefaultVisible', 'BufferDefaultVisibleIndex', 'BufferDefaultVisibleMod',
+      'BufferDefaultVisibleSign', 'BufferDefaultVisibleTarget', 'BufferDefaultVisibleIcon',
+      'BufferDefaultVisibleNumber', 'BufferDefaultVisibleHINT', 'BufferDefaultVisibleINFO',
+      'BufferDefaultVisibleWARN', 'BufferDefaultVisibleERROR',
+    },
+    TabLineFill = {
+      'BufferInactive', 'BufferInactiveIndex', 'BufferInactiveMod', 'BufferInactiveSign',
+      'BufferInactiveTarget', 'BufferInactiveIcon', 'BufferInactiveNumber',
+      'BufferInactiveHINT', 'BufferInactiveINFO', 'BufferInactiveWARN', 'BufferInactiveERROR',
+      'BufferDefaultInactive', 'BufferDefaultInactiveIndex', 'BufferDefaultInactiveMod',
+      'BufferDefaultInactiveSign', 'BufferDefaultInactiveTarget', 'BufferDefaultInactiveIcon',
+      'BufferDefaultInactiveNumber', 'BufferDefaultInactiveHINT', 'BufferDefaultInactiveINFO',
+      'BufferDefaultInactiveWARN', 'BufferDefaultInactiveERROR',
+      'BufferTabpages', 'BufferTabpageFill',
+    },
+  }
+
+  for target, groups in pairs(link_sets) do
+    for _, group in ipairs(groups) do
+      vim.api.nvim_set_hl(0, group, { link = target })
+    end
+  end
+end
+
+local group = vim.api.nvim_create_augroup('BarbarTablineSync', { clear = true })
+vim.api.nvim_create_autocmd('ColorScheme', {
+  group = group,
+  callback = function() vim.schedule(apply_barbar_highlights) end,
+})
+
+vim.schedule(apply_barbar_highlights)

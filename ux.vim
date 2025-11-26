@@ -30,6 +30,7 @@ lua pcall(require,'extensions.ux.context')
 lua pcall(function() require('telescope').load_extension('fzf') end)
 lua pcall(function() require('telescope').load_extension('git_grep') end)
 lua pcall(function() require('telescope').load_extension('frecency') end)
+lua pcall(function() require('telescope').load_extension('coc') end)
 
 
 
@@ -85,7 +86,7 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 "
 
 " Local errors
-nnoremap <silent> <leader>d :Telescope diagnostics bufnr=0<CR>
+nnoremap <silent> <leader>d :Telescope coc diagnostics<CR>
 
 " Global errors
 nnoremap <silent> <leader>D :Telescope diagnostics<CR>
@@ -141,8 +142,13 @@ autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTa
 " ----------------------------------------------------
 " Others
 
-
-
+" enable spell checking
+" commands:
+"   zg  - adds to the dictionary
+"   zug - removes from the dictionary
+"   s[  - searchs for problems up
+"   ]s  - searchs for problems down
+set spell spelllang=en
 
 " The following can be commented out as they cause vim to behave a lot
 " differently from regular Vi. They are highly recommended though.

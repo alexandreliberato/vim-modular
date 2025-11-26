@@ -4,7 +4,9 @@
 local resession = require("resession")
 
 resession.setup({
-    
+   extensions = {
+    barbar{},
+   }
 })
 
 -- Mappings

@@ -53,3 +53,8 @@ Plug 'https://github.com/onsails/lspkind.nvim'
 
 " NVIM LSP: Native
 Plug 'https://github.com/neovim/nvim-lspconfig'
+
+" Get root directory
+Plug 'https://github.com/michel-garcia/radix.nvim'
+
+Plug 'https://github.com/fannheyward/telescope-coc.nvim'

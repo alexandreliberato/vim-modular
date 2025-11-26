@@ -9,6 +9,7 @@
 "load extensions
 lua pcall(require,'extensions.style.line_column_ident')
 lua pcall(require,'extensions.style.context')
+lua pcall(require,'extensions.style.tabline')
 
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
@@ -18,21 +19,22 @@ let g:NERDTreeDirArrowCollapsible = '▾'
 " Set Colorscheme/Theme
 "
 
+
 " Manually set barbar's highlights to match the desired 'blue' theme.
 " This is more robust than linking, as it prevents other themes from overwriting it.
-augroup BarbarThemeSync
-  autocmd!
-  "more green
-  autocmd ColorScheme blue
-    \ highlight BufferCurrent guifg=#000087 guibg=#5fffff |
-    \ highlight BufferInactive guifg=#000087 guibg=#008787 |
-    \ highlight BufferVisible guifg=#000087 guibg=#008787
-  "    more blue
-" autocmd ColorScheme blue
-"    \ highlight BufferCurrent guifg=#ffffff guibg=#005faf |
-"    \ highlight BufferInactive guifg=#5fffff guibg=#000087 |
-"    \ highlight BufferVisible guifg=#5fffff guibg=#000087
-augroup END
+"augroup BarbarThemeSync
+"  autocmd!
+"  "more green
+"  autocmd ColorScheme blue
+"    \ highlight BufferCurrent guifg=#000087 guibg=#5fffff |
+"    \ highlight BufferInactive guifg=#000087 guibg=#008787 |
+"    \ highlight BufferVisible guifg=#000087 guibg=#008787
+"  "    more blue
+"" autocmd ColorScheme blue
+""    \ highlight BufferCurrent guifg=#ffffff guibg=#005faf |
+""    \ highlight BufferInactive guifg=#5fffff guibg=#000087 |
+""    \ highlight BufferVisible guifg=#5fffff guibg=#000087
+"augroup END
 
 " (x) Generic config
 set nolist "hide indents
@@ -44,11 +46,20 @@ set nolist "hide indents
 source $HOME/.config/nvim/colors/azul.vim
 
 " Colors by language
-autocmd BufWinEnter,Filetype python  colorscheme nightvision
-autocmd BufWinEnter,Filetype golang  colorscheme blue
-autocmd BufWinEnter,Filetype vim     colorscheme peachpuff
-autocmd BufWinEnter,Filetype lua     colorscheme peachpuff
-autocmd BufWinEnter,Filetype elixir  colorscheme rose-pine
+autocmd BufWinEnter,Filetype python  ++nested colorscheme nightvision
+autocmd BufWinEnter,Filetype golang  ++nested colorscheme blue
+autocmd BufWinEnter,Filetype vim     ++nested colorscheme peachpuff
+autocmd BufWinEnter,Filetype lua     ++nested colorscheme peachpuff
+autocmd BufWinEnter,Filetype elixir  ++nested colorscheme rose-pine
+
+" reload CoC colors after colorscheme change
+autocmd ColorScheme * call Highlight()
+
+function! Highlight() abort
+  hi Conceal ctermfg=239 guifg=#504945
+  hi CocSearch ctermfg=12 guifg=#18A3FF
+  hi CocErrorHighlight gui=undercurl guisp=#ff3030 guifg=NONE guibg=NONE
+endfunction
 
 " -------------------------------------------
 "

@@ -11,6 +11,13 @@ local root_patterns = { ".git", "go.mod" }
 local root_dir = vim.fs.dirname(vim.fs.find(root_patterns, { upward = true })[1])
 
 require('telescope').setup{
+  extensions = {
+    coc = {
+        prefer_locations = false, -- always use Telescope locations to preview definitions/declarations/implementations etc
+        push_cursor_on_edit = true, -- save the cursor position to jump back in the future
+        timeout = 3000 -- timeout for coc commands   
+    }
+  },
   defaults = {
     file_ignore_patterns = {
       "node_modules",
