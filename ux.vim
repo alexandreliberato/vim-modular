@@ -25,20 +25,18 @@ lua pcall(require,'extensions.ux.git')
 lua pcall(require,'extensions.ux.autocomplete')
 lua pcall(require,'extensions.ux.sessions')
 lua pcall(require,'extensions.ux.context')
+lua pcall(require,'extensions.ux.keymap')
 
 " load Telescope extensions
 lua pcall(function() require('telescope').load_extension('fzf') end)
 lua pcall(function() require('telescope').load_extension('git_grep') end)
 lua pcall(function() require('telescope').load_extension('frecency') end)
 lua pcall(function() require('telescope').load_extension('coc') end)
-
+lua pcall(function() require('telescope').load_extension('noice') end)
 
 
 " ----------------------------------------------------
 " Level 01 - Very High Impact
-
-" nerdtree: File explorer width
-:let g:NERDTreeWinSize=45
 
 " vim: show numbers
 set number
@@ -46,12 +44,17 @@ set number
 " does not exits when deleting a buffer
 command! BD bn | bd #
 
+
+
 " ----------------------------------------------------
 "  Level 02 - High Impact
 
 "
 " VIM
 "
+
+" reload vim config
+nnoremap <silent> <leader>vs :source $HOME/.config/nvim/init.vim<CR>
 
 " write using leader
 nnoremap <silent> <leader>w :w<CR>
@@ -70,7 +73,7 @@ set fillchars=eob:\
 set foldcolumn=3
 set foldmethod=manual
 
-" Alternar exibição de numero de linhas (facilita na hora de copiar)
+" Alternar exibição de número de linhas (facilita na hora de copiar)
 nnoremap  :set nonumber!: set foldcolumn=0
 
 " vim: copy to clipboard
@@ -96,13 +99,27 @@ nnoremap <silent> <leader>D :Telescope diagnostics<CR>
 " NERDTree: a filer explorer
 "
 
-" Hide til (~) 
+" Width
+let g:NERDTreeWinSize=45
+
+" Start NERDTree. If a file is specified, move the cursor to its window.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
+
+" OR
+
+" Start NERDTree, unless a file or session is specified, eg. vim -S session_file.vim.
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * if argc() == 0 && !exists('s:std_in') && v:this_session == '' | NERDTree | endif
+
+" Hide character '~' 
 let NERDTreeIgnore = ['\.til$', '\~$', '\.swp$']
 
 " Respect Vim's built-in wildignore settings as well
 set wildignore+=*.til,*.swp,*~
 let NERDTreeRespectWildIgnore=1
 
+" Reveal file
 function! NerdTreeToggleFind()
   if filereadable(expand('%'))
     NERDTreeFind
@@ -111,33 +128,66 @@ function! NerdTreeToggleFind()
   endif
 endfunction
 
-" Shows filename in statusline -> auto
+" Reveals/Selects file 
+nnoremap <silent> <leader>er :call NerdTreeToggleFind()<CR>
+
+" Filename in statusline 
 let g:NERDTreeStatusline = "%{exists('g:NERDTreeFileNode')&&" .
       \ "has_key(g:NERDTreeFileNode.GetSelected(),'path')?" .
       \ "g:NERDTreeFileNode.GetSelected().path.getLastPathComponent(0):''}"
 
-" Reveals/Selects file in NERDTree/File Explorer -> ;nf
-"nnoremap <silent> <leader>nf :NERDTreeFind<CR>
-nnoremap <silent> <leader>nr :call NerdTreeToggleFind()<CR>
-
-" Toggle NERDTree
-" Can't get <C-Space> by itself to work, so this works as Ctrl - space - space
-" https://github.com/neovim/neovim/issues/3101
-" http://stackoverflow.com/questions/7722177/how-do-i-map-ctrl-x-ctrl-o-to-ctrl-space-in-terminal-vim#answer-24550772
-"nnoremap <C-Space> :NERDTreeToggle<CR>
-"nmap <C-@> <C-Space>
+" Open/Close keymap
 nnoremap <silent> <Space>e :NERDTreeToggle<CR>
 
-" open directory using 'L', only when in nerdtree
-"did not worked
-"nnoremap <silent> l o<CR>
+" Enter a directory using 'L' 
 autocmd FileType nerdtree nmap <buffer> l o
 
+" Auto refresh directory 
+autocmd BufEnter NERD_tree_* | execute 'normal R'
+au CursorHold * if exists("t:NerdTreeBufName") | call function('s:refreshRoot')() | endif
 
-" Exit Vim if NERDTree is the only window remaining in the only tab.
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
-" Close the tab if NERDTree is the only window remaining in it.
-autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
+" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+autocmd BufEnter * if winnr() == winnr('h') && bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+
+" Hide message: Please wait caching large directory
+let g:NERDTreeNotificationThreshold = 500
+let NERDTreeShowHidden=1
+
+" Show file lines
+"let g:NERDTreeFileLines = 1
+
+" ?? CONFIGURE NERD TREE FUNCTIONS
+let s:hidden_all = 0
+function! ToggleHiddenAll()
+    if s:hidden_all  == 0
+        let s:hidden_all = 1
+        set noshowmode
+        set noruler
+        set laststatus=0
+        set noshowcmd
+	TagbarClose
+	NERDTreeClose
+        set foldcolumn=10
+
+    else
+	set foldcolumn=0
+        let s:hidden_all = 0
+        set showmode
+        set ruler
+        set laststatus=2 
+        set showcmd
+	NERDTree
+	" NERDTree takes focus, so move focus back to the right
+	" (note: "l" is lowercase L (mapped to moving right)
+	wincmd l
+	TagbarOpen
+
+    endif
+endfunction
+
+nnoremap <silent> <leader>h :call ToggleHiddenAll()<CR>
+
 
 " ----------------------------------------------------
 " Others
@@ -344,80 +394,7 @@ nnoremap <silent> <leader>th :new<CR>:terminal<CR>
 tnoremap <C-x> <C-\><C-n><C-w>q
 
 
-" Auto start NERD tree if no files are specified
-" This logic has been moved to a new s:FinalStartup() function in init.vim.
-" autocmd StdinReadPre * let s:std_in=1
-" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | exe 'NERDTree' | endif
 
-" Let quit work as expected if after entering :q the only window left open is NERD Tree it
-"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) 
-
-" Refresh the current folder if any changes
-autocmd BufEnter NERD_tree_* | execute 'normal R'
-au CursorHold * if exists("t:NerdTreeBufName") | call function('s:refreshRoot')() | endif
-
-" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
-autocmd BufEnter * if winnr() == winnr('h') && bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
-    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
-
-" close NERDTree after a file is opened
-let g:NERDTreeQuitOnOpen=0
-
-" dont show message: Please wait caching large directory
-let g:NERDTreeNotificationThreshold = 500
-let NERDTreeShowHidden=1
-
-" Exit Vim if NERDTree is the only window remaining in the only tab.
-"autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-
-" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
-autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
-    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
-
-
-" show file lines
-"let g:NERDTreeFileLines = 1
-
-
-
-
-" CONFIGURE NERD TREE FUNCTIONS
-let s:hidden_all = 0
-function! ToggleHiddenAll()
-    if s:hidden_all  == 0
-        let s:hidden_all = 1
-        set noshowmode
-        set noruler
-        set laststatus=0
-        set noshowcmd
-	TagbarClose
-	NERDTreeClose
-        set foldcolumn=10
-
-    else
-	set foldcolumn=0
-        let s:hidden_all = 0
-        set showmode
-        set ruler
-        set laststatus=2 
-        set showcmd
-	NERDTree
-	" NERDTree takes focus, so move focus back to the right
-	" (note: "l" is lowercase L (mapped to moving right)
-	wincmd l
-	TagbarOpen
-
-    endif
-endfunction
-
-" This autocommand is no longer needed as the startup logic is now
-" correctly handled and deferred in init.vim.
-" augroup BarbarNerdTree
-"   autocmd!
-"   autocmd FileType nerdtree lua require'barbar'.force_redraw()
-" augroup END
-
-nnoremap <silent> <leader>h :call ToggleHiddenAll()<CR>
 
 " COC
 " improve CoC usage
@@ -531,11 +508,49 @@ augroup filetypedetect
   autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2
 augroup END
 
+" Quit inteligente: fecha o Neovim inteiro com :q em buffers normais.
+" Se estiver no NERDTree, fecha só aquela janela.
+function! s:IsNerdTreeBuf(name) abort
+  " Qualquer buffer cujo nome combine com NERD_tree_* é NERDTree
+  return a:name =~# 'NERD_tree_\d\+'
+endfunction
 
-" This has been moved to style.vim to ensure it loads at the correct time.
-" autocmd ColorScheme * lua require'barbar'.force_redraw()
+function! s:SmartQuit() abort
+  let l:curr_name = bufname('%')
+
+  " 1) Se estou em uma janela do NERDTree, só fecha essa janela
+  if s:IsNerdTreeBuf(l:curr_name)
+    quit
+    return
+  endif
+
+  " 2) Verifica se existe ao menos uma janela NERDTree aberta
+  let l:has_nerdtree = bufwinnr('NERD_tree_1') > 0
+  if !l:has_nerdtree
+    " Não tem NERDTree aberto -> fecha o Neovim inteiro
+    qa
+    return
+  endif
+
+  " 3) Tem NERDTree aberto e estou em outro buffer:
+  "    fecha o(s) NERDTree(s) e depois sai de tudo
+  for l:w in range(1, winnr('$'))
+    let l:buf = winbufnr(l:w)
+    let l:name = bufname(l:buf)
+    if s:IsNerdTreeBuf(l:name)
+      execute l:w . 'wincmd c'
+    endif
+  endfor
+
+  " Agora fecha o Neovim inteiro
+  qa
+endfunction
+
+command! SmartQuit call <SID>SmartQuit()
+
+" Se o usuário digitou exatamente :q, troca por :SmartQuit
+cnoreabbrev <expr> q (getcmdtype() ==# ':' && getcmdline() ==# 'q') ? 'SmartQuit' : 'q'
 
 
-
-
-
+" Start NERDTree and put the cursor back in the other window.
+autocmd VimEnter * NERDTree | wincmd p

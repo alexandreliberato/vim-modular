@@ -37,7 +37,6 @@ Plug 'nvim-neotest/neotest'
 
 " Sessions
 Plug 'mhinz/vim-startify'
-Plug 'https://github.com/stevearc/resession.nvim'
 
 " Markdown 
 Plug 'lukas-reineke/headlines.nvim'
@@ -57,4 +56,13 @@ Plug 'https://github.com/neovim/nvim-lspconfig'
 " Get root directory
 Plug 'https://github.com/michel-garcia/radix.nvim'
 
+" Telescope integration with coc
 Plug 'https://github.com/fannheyward/telescope-coc.nvim'
+
+" Noice: Improved logging
+Plug 'MunifTanjim/nui.nvim'
+Plug 'rcarriga/nvim-notify'
+Plug 'folke/noice.nvim'
+
+" Session + git + automatically
+Plug 'https://github.com/rmagatti/auto-session'

@@ -21,6 +21,9 @@ call plug#begin('~/.local/share/nvim/plugged')
     luafile $HOME/.config/nvim/modules/lua.lua
 call plug#end()
 
+" Noice: Improved logging
+lua pcall(require,'extensions.infra.logger')
+
 " Configure barbar.nvim immediately after it's loaded.
 " This ensures it's ready before any autocommands use it.
 lua pcall(require,'extensions.ux.buffers')
@@ -28,6 +31,9 @@ lua pcall(require,'extensions.ux.buffers')
 " -----------------------------------------------
 " Run Language Extensions
 source $HOME/.config/nvim/languages.vim
+
+" Sleep: ensure everything is ready to be configured and used
+call system("execute sleep 0.2")
 
 " -----------------------------------------------
 " Run UX and Style extensions

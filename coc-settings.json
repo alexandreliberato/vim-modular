@@ -17,11 +17,13 @@
         "usePlaceholders": true
       }
     },
-  "Lua.runtime.version": "LuaJIT", 
-  "sumneko-lua.enableNvimLuaDev": true,
-  "Lua.diagnostics.globals": [ "vim" ],
-  "Lua.format.enable": true,
-  "python": {
+    "lua": {
+        "command": "/home/alexandre.macedo/.local/lls/bin/lua-language-server",
+        "cwd": "/home/alexandre.macedo/.local/lls",
+        "filetypes": ["lua"],
+        "rootPatterns": [".git/"]
+    },
+    "python": {
       "command": "bin/pyright-langserver",
       "args": ["--stdio"],
       "filetypes": ["python"],
@@ -62,9 +64,8 @@
   "_comment": "LUA",
 
   "Lua.runtime.version": "LuaJIT", 
-  "Lua.diagnostics.globals": [ "vim" ],
+  "Lua.diagnostics.globals": ["hs", "vim", "it", "describe", "before_each", "after_each"],
   "Lua.format.enable": true,
-  "sumneko-lua.enableNvimLuaDev": true,
   
   "_comment": "-------------------------------------",
   "_comment": "TYPESCRIPT",

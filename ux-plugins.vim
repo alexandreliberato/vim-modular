@@ -41,9 +41,6 @@ Plug 'https://github.com/mathofprimes/nightvision-nvim'
 
 
 "-----------------------------------------------------------------
-"Tabs/Session: Plugins
-"Plug "tiagovla/scope.nvim"
-
 " Bufferline/Tabs
 "Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
 Plug 'nvim-tree/nvim-web-devicons' " OPTIONAL: for file icons
@@ -58,3 +55,8 @@ Plug 'tveskag/nvim-blame-line'
 " ----------------------------------------------------------------
 "  Context: Plugins
 Plug 'https://github.com/nvim-treesitter/nvim-treesitter-context'
+
+
+
+" Keymap navigation
+Plug 'https://github.com/folke/which-key.nvim'

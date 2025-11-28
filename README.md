@@ -20,6 +20,7 @@ NVim modular configuration with support for:
 ## Dependencies
 - ripgrep
 - sharkdp/fd
+- https://github.com/LuaLS/lua-language-server
 
 ## How to Use
 You should clone and copy all files and directories to your nvim config path, like: /home/user/.config/nvim/

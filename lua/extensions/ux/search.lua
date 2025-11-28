@@ -56,9 +56,6 @@ vim.keymap.set('n','<leader>b', builtin.buffers,    { desc='Telescope Buffers' }
 
 -- -----------------------------------------
 -- Content Search
-vim.keymap.set('n','<leader>s', builtin.live_grep)
-
--- Quickfix Search
-vim.keymap.set('n','<leader>l', builtin.loclist)
+vim.keymap.set('n','<leader>s', builtin.live_grep, { desc='Telescope Search text' })
 
 
