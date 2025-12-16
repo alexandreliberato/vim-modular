@@ -26,6 +26,9 @@ lua pcall(require,'extensions.ux.autocomplete')
 lua pcall(require,'extensions.ux.sessions')
 lua pcall(require,'extensions.ux.context')
 lua pcall(require,'extensions.ux.keymap')
+lua pcall(require,'extensions.ux.scrolling')
+lua pcall(require,'extensions.ux.diagnostics')
+lua pcall(require,'extensions.ux.find_and_replace')
 
 " load Telescope extensions
 lua pcall(function() require('telescope').load_extension('fzf') end)
@@ -33,6 +36,7 @@ lua pcall(function() require('telescope').load_extension('git_grep') end)
 lua pcall(function() require('telescope').load_extension('frecency') end)
 lua pcall(function() require('telescope').load_extension('coc') end)
 lua pcall(function() require('telescope').load_extension('noice') end)
+lua pcall(function() require('telescope').load_extension('live_grep_args') end)
 
 
 " ----------------------------------------------------
@@ -52,6 +56,15 @@ command! BD bn | bd #
 "
 " VIM
 "
+
+" move buffers at same time
+nnoremap <silent> <F5> :windo normal! j<CR>
+nnoremap <silent> <F6> :windo normal! k<CR>
+
+
+" improve scrolling:
+" this options makes it so that the buffer starts scrolling earlier to always show 8 lines above or under the cursor.
+set scrolloff=8
 
 " reload vim config
 nnoremap <silent> <leader>vs :source $HOME/.config/nvim/init.vim<CR>
@@ -89,10 +102,11 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 "
 
 " Local errors
+"https://github.com/neoclide/coc.nvim/wiki/Using-coc-list
 nnoremap <silent> <leader>d :Telescope coc diagnostics<CR>
 
 " Global errors
-nnoremap <silent> <leader>D :Telescope diagnostics<CR>
+nnoremap <silent> <leader>D :CocList diagnostics<CR>
 
 
 "
@@ -335,6 +349,9 @@ set wildmenu wildmode=full
 
 
 " 2) 
+" close all but current
+nnoremap <silent> <leader>ba :BufferCloseAllButCurrent<CR>
+
 " toggle buffer (switch between current and last buffer)
 nnoremap <silent> <leader>bb <C-^>
 

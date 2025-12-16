@@ -58,6 +58,8 @@ Plug 'https://github.com/michel-garcia/radix.nvim'
 
 " Telescope integration with coc
 Plug 'https://github.com/fannheyward/telescope-coc.nvim'
+" Arguments for Telescope
+Plug 'https://github.com/nvim-telescope/telescope-live-grep-args.nvim'
 
 " Noice: Improved logging
 Plug 'MunifTanjim/nui.nvim'
@@ -66,3 +68,12 @@ Plug 'folke/noice.nvim'
 
 " Session + git + automatically
 Plug 'https://github.com/rmagatti/auto-session'
+
+" Better scrolling
+Plug 'karb94/neoscroll.nvim'
+
+" Better  diagnostics
+Plug 'https://github.com/folke/trouble.nvim'
+
+" Find and replace
+Plug 'https://github.com/MagicDuck/grug-far.nvim'

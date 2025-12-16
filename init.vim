@@ -32,6 +32,8 @@ lua pcall(require,'extensions.ux.buffers')
 " Run Language Extensions
 source $HOME/.config/nvim/languages.vim
 
+lua pcall(require,'postgresql.postgres_lsp')
+
 " Sleep: ensure everything is ready to be configured and used
 call system("execute sleep 0.2")
 
@@ -40,6 +42,7 @@ call system("execute sleep 0.2")
 source $HOME/.config/nvim/style.vim
 source $HOME/.config/nvim/ux.vim
 source $HOME/.config/nvim/modules/go/ux.vim
+source $HOME/.config/nvim/modules/go/keymaps.vim
 
 " CONFIGURE markdown plugin
 lua require("headlines").setup()

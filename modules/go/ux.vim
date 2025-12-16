@@ -70,16 +70,7 @@ endfunction
 let g:go_fmt_command = "goimports"
 
 
-"
-" Build & Run
-"
 
-" (off) Build
-autocmd FileType go nmap <leader>gb :<C-u>call <SID>build_go_files()<CR>
-" Test
-autocmd FileType go nmap <leader>gt  <Plug>(go-test)
-" Run
-autocmd FileType go nmap <leader>gr  <Plug>(go-run)
 
 "
 " Debug
@@ -111,6 +102,7 @@ function! s:GoRefsTelescope()
   call timer_start(180, { -> execute('lclose | Telescope loclist') })
 endfunction
 
+" Go to references
 autocmd FileType go nnoremap <silent><buffer> <leader>r :call <SID>GoRefsTelescope()<CR>
 
 " Go implements -> Telescope (async safe)

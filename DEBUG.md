@@ -1,3 +1,7 @@
+# Debug
+
+## Logs
+:messages, :CocInfo, or CocOpenLog
 ## Verify if a key binding is overwritten
 :verbose key
 
