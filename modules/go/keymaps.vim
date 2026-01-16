@@ -31,3 +31,9 @@ autocmd FileType go nmap <leader>gb :<C-u>call <SID>build_go_files()<CR>
 
 " Run App
 autocmd FileType go nmap <leader>gra  <Plug>(go-run)
+
+" (off) Show documentation/signature in a floating window when hovering
+" autocmd CursorHold * silent call CocActionAsync('doHover')
+
+" (off) Show documentation/signature on <leader> + g + h
+autocmd FileType go nmap <leader>gh :CocCommand document.toggleInlayHint<CR>

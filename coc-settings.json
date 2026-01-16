@@ -14,7 +14,16 @@
       "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
       "filetypes": ["go"],
       "initializationOptions": {
-        "usePlaceholders": true
+        "usePlaceholders": true,
+        "hints": {
+          "parameterNames": true,
+          "assignVariableTypes": true,
+          "constantValues": true,
+          "compositeLiteralFields": true,
+          "compositeLiteralTypes": true,
+          "functionTypeParameters": true,
+          "rangeVariableTypes": true
+        }      
       }
     },
     "lua": {
@@ -41,6 +50,12 @@
 
   "_comment": "-------------------------------------",
   "_comment": "GENERAL",
+
+  "inlayHint.enable": true,
+  "inlayHint.display": false,
+
+  "signature.enable": true,
+  "signature.floatConfig": { "border": true },
 
   "suggest.noselect": true,
 

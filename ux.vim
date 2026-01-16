@@ -35,7 +35,7 @@ lua pcall(function() require('telescope').load_extension('fzf') end)
 lua pcall(function() require('telescope').load_extension('git_grep') end)
 lua pcall(function() require('telescope').load_extension('frecency') end)
 lua pcall(function() require('telescope').load_extension('coc') end)
-lua pcall(function() require('telescope').load_extension('noice') end)
+"lua pcall(function() require('telescope').load_extension('noice') end)
 lua pcall(function() require('telescope').load_extension('live_grep_args') end)
 
 
@@ -46,12 +46,21 @@ lua pcall(function() require('telescope').load_extension('live_grep_args') end)
 set number
 
 " does not exits when deleting a buffer
-command! BD bn | bd #
+" OLD:
+" command! BD bn | bd #
+
+" NEW: go to last buffer (#), then delete the previous one
+command! BD if bufnr('#') > 0 && buflisted(bufnr('#')) | execute 'b# | bd #' | else | bnext | endif
 
 
 
 " ----------------------------------------------------
 "  Level 02 - High Impact
+
+"
+" COPILOT: CHAT
+" 
+nnoremap <silent> <leader>c :CopilotChatToggle<CR>
 
 "
 " VIM
@@ -156,9 +165,9 @@ nnoremap <silent> <Space>e :NERDTreeToggle<CR>
 " Enter a directory using 'L' 
 autocmd FileType nerdtree nmap <buffer> l o
 
-" Auto refresh directory 
-autocmd BufEnter NERD_tree_* | execute 'normal R'
-au CursorHold * if exists("t:NerdTreeBufName") | call function('s:refreshRoot')() | endif
+" Auto refresh directory (disabled: caused issues with auto-session + empty buffers)
+"autocmd BufEnter NERD_tree_* | execute 'normal R'
+"au CursorHold * if exists("t:NerdTreeBufName") | call function('s:refreshRoot')() | endif
 
 " If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
 autocmd BufEnter * if winnr() == winnr('h') && bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
@@ -233,6 +242,7 @@ set showcmd                  " Show me what I'm typing
 set splitright               " Split vertical windows right to the current windows
 set splitbelow               " Split horizontal windows below to the current windows
 set nocursorcolumn           " speed up syntax highlighting
+set synmaxcol=300           " stop syntax highlight on very long lines (tokens, minified files)
 set updatetime=300
 set pumheight=10             " Completion window max size
 set conceallevel=2           " Concealed text is completely hidden
@@ -293,7 +303,7 @@ set splitright
 set splitbelow
 
 " Enter automatically into the files directory
-autocmd BufEnter * silent! lcd %:p:h
+"autocmd BufEnter * silent! lcd %:p:h
 
 " Automatically resize screens to be equally the same
 autocmd VimResized * wincmd =
@@ -381,7 +391,7 @@ nnoremap <silent> <leader>bh :new<CR>
 " vertical split with new buffer
 nnoremap <silent> <leader>bv :vnew<CR>
 
-" redraw screan and clear search highlighted items
+" redraw screen and clear search highlighted items
 "http://stackoverflow.com/questions/657447/vim-clear-last-search-highlighting#answer-25569434
 nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 
@@ -429,6 +439,25 @@ else
   inoremap <silent><expr> <c-@> coc#refresh()
 endif
 
+" Highlight the symbol and its references when holding the cursor
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved
+set signcolumn=yes
+
+
+" Some servers have issues with backup files, see #649
+set nobackup
+set nowritebackup
+
+
+" Map function and class text objects
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
 
 
 " Use tab for trigger completion with characters ahead and navigate
@@ -571,3 +600,5 @@ cnoreabbrev <expr> q (getcmdtype() ==# ':' && getcmdline() ==# 'q') ? 'SmartQuit
 
 " Start NERDTree and put the cursor back in the other window.
 autocmd VimEnter * NERDTree | wincmd p
+
+let g:NERDTreeChDirMode = 0

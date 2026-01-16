@@ -64,7 +64,8 @@ Plug 'https://github.com/nvim-telescope/telescope-live-grep-args.nvim'
 " Noice: Improved logging
 Plug 'MunifTanjim/nui.nvim'
 Plug 'rcarriga/nvim-notify'
-Plug 'folke/noice.nvim'
+"too experimental but i could use in the future
+"Plug 'folke/noice.nvim'
 
 " Session + git + automatically
 Plug 'https://github.com/rmagatti/auto-session'
@@ -77,3 +78,10 @@ Plug 'https://github.com/folke/trouble.nvim'
 
 " Find and replace
 Plug 'https://github.com/MagicDuck/grug-far.nvim'
+
+" Copilot: Suggestions and next autocomplete
+"Plug 'copilotlsp-nvim/copilot-lsp'
+"Plug 'zbirenbaum/copilot.lua'
+
+" Copilot: CHat
+Plug 'CopilotC-Nvim/CopilotChat.nvim'

@@ -1,4 +1,8 @@
 " LOAD ALL CONFIGURATIONS MODULES
+"
+
+" optimize loading plugins
+lua vim.loader.enable()
 
 " -----------------------------------------------
 "  INSTALL PLUGINS
@@ -22,11 +26,14 @@ call plug#begin('~/.local/share/nvim/plugged')
 call plug#end()
 
 " Noice: Improved logging
-lua pcall(require,'extensions.infra.logger')
+"lua pcall(require,'extensions.infra.logger')
 
 " Configure barbar.nvim immediately after it's loaded.
 " This ensures it's ready before any autocommands use it.
 lua pcall(require,'extensions.ux.buffers')
+
+" copilot suggestions
+"lua pcall(require,'extensions.infra.copilot')
 
 " -----------------------------------------------
 " Run Language Extensions
@@ -46,6 +53,9 @@ source $HOME/.config/nvim/modules/go/keymaps.vim
 
 " CONFIGURE markdown plugin
 lua require("headlines").setup()
+
+" Copilot chat
+lua require("CopilotChat").setup()
 
 
 " Create a single startup function to run after everything is loaded.

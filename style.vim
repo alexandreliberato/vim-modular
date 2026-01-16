@@ -47,7 +47,9 @@ source $HOME/.config/nvim/colors/azul.vim
 
 " Colors by language
 autocmd BufWinEnter,Filetype python  ++nested colorscheme nightvision
-autocmd BufWinEnter,Filetype golang  ++nested colorscheme blue
+autocmd BufWinEnter,Filetype go      ++nested colorscheme blue
+" Soften matching bracket color/style for Go files
+autocmd FileType go highlight MatchParen cterm=underline ctermbg=NONE ctermfg=NONE gui=underline guibg=NONE guifg=NONE
 autocmd BufWinEnter,Filetype vim     ++nested colorscheme peachpuff
 autocmd BufWinEnter,Filetype lua     ++nested colorscheme peachpuff
 autocmd BufWinEnter,Filetype elixir  ++nested colorscheme rose-pine
@@ -58,7 +60,8 @@ autocmd ColorScheme * call Highlight()
 function! Highlight() abort
   hi Conceal ctermfg=239 guifg=#504945
   hi CocSearch ctermfg=12 guifg=#18A3FF
-  hi CocErrorHighlight gui=undercurl guisp=#ff3030 guifg=NONE guibg=NONE
+  " make error text red
+  hi CocErrorHighlight gui=undercurl guisp=#ff3030 guifg=#ff0000 guibg=NONE
 endfunction
 
 " -------------------------------------------
