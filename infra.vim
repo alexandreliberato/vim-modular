@@ -21,7 +21,6 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 " Programming Languages Support Plugin
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-
 " UML 
 Plug 'aklt/plantuml-syntax'
 Plug 'tyru/open-browser.vim'
@@ -39,7 +38,7 @@ Plug 'nvim-neotest/neotest'
 Plug 'mhinz/vim-startify'
 
 " Markdown 
-Plug 'lukas-reineke/headlines.nvim'
+" TODO: P0 - search for a good plugin
 
 " Outline
 Plug 'preservim/tagbar'
@@ -83,5 +82,31 @@ Plug 'https://github.com/MagicDuck/grug-far.nvim'
 "Plug 'copilotlsp-nvim/copilot-lsp'
 "Plug 'zbirenbaum/copilot.lua'
 
-" Copilot: CHat
+" Copilot: Chat AI/IA/Artificial Intelligence
 Plug 'CopilotC-Nvim/CopilotChat.nvim'
+
+" SQLite support, used for Telescope
+Plug 'kkharji/sqlite.lua'
+
+" Debug
+Plug 'mfussenegger/nvim-dap'
+Plug 'leoluz/nvim-dap-go'
+
+" Debug UI
+Plug 'nvim-neotest/nvim-nio'
+Plug 'rcarriga/nvim-dap-ui'
+
+" Go2File: Improved gf/gF
+" Better path solution
+Plug 'HawkinsT/pathfinder.nvim'
+" git.lua
+"
+
+" Tmux syntax
+Plug 'ericpruitt/tmux.vim', {'rtp': 'vim/'}
+
+" Lua formatter
+Plug 'ckipp01/stylua-nvim'
+
+" Generic linters: used for better spell:set scrolloff=10
+Plug 'mfussenegger/nvim-lint'

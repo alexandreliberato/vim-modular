@@ -25,6 +25,9 @@ call plug#begin('~/.local/share/nvim/plugged')
     luafile $HOME/.config/nvim/modules/lua.lua
 call plug#end()
 
+" Notifications UI (required for `:Telescope notify` history)
+lua pcall(require,'extensions.infra.notify')
+
 " Noice: Improved logging
 "lua pcall(require,'extensions.infra.logger')
 
@@ -34,6 +37,9 @@ lua pcall(require,'extensions.ux.buffers')
 
 " copilot suggestions
 "lua pcall(require,'extensions.infra.copilot')
+
+" Project root directory
+lua pcall(require,'extensions.infra.directories')
 
 " -----------------------------------------------
 " Run Language Extensions
@@ -51,8 +57,23 @@ source $HOME/.config/nvim/ux.vim
 source $HOME/.config/nvim/modules/go/ux.vim
 source $HOME/.config/nvim/modules/go/keymaps.vim
 
+" Enable debugging
+lua << EOF
+require('dap-go').setup({
+  delve = {
+    detached = false,
+    path = "dlv",
+    detached = false,
+    cwd = vim.fn.getcwd(), -- Force current working directory
+    port = "23451", -- Use a non-standard port
+  },
+})
+EOF
+
+lua require("dapui").setup()
+
 " CONFIGURE markdown plugin
-lua require("headlines").setup()
+" TODO
 
 " Copilot chat
 lua require("CopilotChat").setup()
@@ -62,14 +83,13 @@ lua require("CopilotChat").setup()
 function! s:FinalStartup()
   " 1. Open NERDTree if no files were provided.
   if argc() == 0 && !exists("s:std_in")
-    NERDTree
+    call OpenNERDTreeAtProjectRoot()
   endif
 
   " 2. Move cursor to the main window.
   wincmd p
 
-  " 3. Force barbar.nvim to redraw. This is now safe because this entire
-  "    function is deferred until after all plugins are fully loaded.
+  " 3. Force barbar.nvim to redraw.
   lua pcall(require'barbar'.force_redraw)
 endfunction
 

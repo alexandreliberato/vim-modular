@@ -7,11 +7,43 @@
 -- MENU
 -- - File Search 
 -- - Content Search
-local root_patterns = { ".git", "go.mod" }
+local root_patterns = { ".git" }
 local cwd = (vim.uv or vim.loop).cwd()
 local found_root = vim.fs.find(root_patterns, { upward = true, path = cwd })[1]
 local root_dir = found_root and vim.fs.dirname(found_root) or cwd
 local actions = require('telescope.actions')
+
+local function is_nerdtree_win(winid)
+  if not winid or winid == 0 or not vim.api.nvim_win_is_valid(winid) then
+    return false
+  end
+  local buf = vim.api.nvim_win_get_buf(winid)
+  local name = vim.api.nvim_buf_get_name(buf)
+  if name:match('^NERD_tree_%d+$') then
+    return true
+  end
+  local ft = vim.api.nvim_get_option_value('filetype', { buf = buf })
+  return ft == 'nerdtree'
+end
+
+local function pick_non_nerdtree_win()
+  -- Prefer the alternate window (#) if it's not NERDTree.
+  local alt = vim.fn.win_getid(vim.fn.winnr('#'))
+  if alt ~= 0 and not is_nerdtree_win(alt) then
+    return alt
+  end
+
+  -- Otherwise, pick any normal window in the current tab.
+  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+    if not is_nerdtree_win(win) then
+      return win
+    end
+  end
+
+  -- Fallback: current window.
+  return vim.api.nvim_get_current_win()
+end
+
 local has_sqlite = pcall(require, 'sqlite')
 if not has_sqlite then
   vim.schedule(function()
@@ -41,6 +73,12 @@ require('telescope').setup{
     },
   },
   defaults = {
+    -- Important: if Telescope is launched while the cursor is in NERDTree,
+    -- opening a selection would normally replace the NERDTree window.
+    -- Force selections to open in a non-NERDTree window.
+    get_selection_window = function()
+      return pick_non_nerdtree_win()
+    end,
     layout_strategy = 'vertical',
     layout_config = { vertical = { preview_height = 0.65, prompt_position = 'bottom' } },
     dynamic_preview_title = true,
@@ -68,7 +106,11 @@ require('telescope').setup{
     },
     file_ignore_patterns = {
       "node_modules",
-      "*/vendor/"
+      "*_mock.go",
+      "*/mocks/*.go",
+      "*/mocks/",
+      "/mocks/",
+      "/mocks/.go"
     },
     vimgrep_arguments = {
       'rg',
@@ -86,6 +128,13 @@ require('telescope').setup{
      live_grep = {
        search_dirs = { root_dir },
      },
+     loclist = {
+      "*_mock.go",
+      "*/mocks/*.go",
+      "*/mocks/",
+      "/mocks/",
+      "/mocks/.go"
+     }
   },
 }
 

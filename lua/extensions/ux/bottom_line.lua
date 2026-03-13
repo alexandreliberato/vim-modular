@@ -1,6 +1,7 @@
 -- Bufferline 
 -- Load the existing powerline_dark theme
 local custom_powerline_dark = require('lualine.themes.powerline_dark')
+ 
 
 -- Define a specific blue color you want to use
 local colors = {
@@ -43,6 +44,38 @@ custom_powerline_dark.inactive.b.fg = colors.darkblue
 custom_powerline_dark.inactive.c.bg = colors.navyblue
 custom_powerline_dark.inactive.c.fg = colors.white
 
+-- backend‑oriented lualine components
+local function project_root()
+  local ok, radix = pcall(require, 'radix')
+  if not ok then return '' end
+  local root = radix.get_root_dir(vim.fn.getcwd() or '')
+
+  if not root or root == '' then return '' end
+  return ' ' .. vim.fn.fnamemodify(root, ':t')
+end
+
+local function python_venv()
+  local venv = vim.env.VIRTUAL_ENV
+  if venv and venv ~= '' then
+    return ' ' .. vim.fn.fnamemodify(venv, ':t')
+  end
+  return ''
+end
+
+local function coc_status()
+  if vim.fn.exists('*coc#status') == 1 then
+    return vim.fn['coc#status']()
+  end
+  return ''
+end
+
+local function session_name()
+  local ok, lib = pcall(require, 'auto-session.lib')
+  if not ok then return '' end
+  local name = lib.current_session_name(true)
+  return name or ''
+end
+
 require("lualine").setup{
     options = {
         icons_enabled = true,
@@ -57,12 +90,43 @@ require("lualine").setup{
         always_divide_middle = true,
         --always_show_tabline = true,
         globalstatus = false,
+    },
       sections = {
         lualine_a = {'mode'},
-        lualine_b = {'branch', 'diff'},
-        lualine_c = {'filename'},
-        lualine_x = {'encoding', 'fileformat', 'filetype'},
-        lualine_y = {'progress'},
+        lualine_b = {
+              { 'branch', icon = '' },
+              'diff',
+              {
+                'diagnostics',
+                sources = { 'nvim_diagnostic' },
+                sections = { 'error', 'warn', 'hint', 'info' },
+                symbols = { error = ' ', warn = ' ', hint = ' ', info = ' ' },
+                colored = true,
+                update_in_insert = false,
+              },
+            },
+        lualine_c = {
+          {
+            'filename',
+            path = 1, -- 1 displays the relative path from cwd (project root)
+            file_status = true, -- displays file status (readonly, modified, etc.)
+          },
+        },
+        --lualine_x = {'encoding', 'fileformat', 'filetype'},
+        lualine_x = {
+          'location',
+          { coc_status, cond = function() return vim.fn.exists('*coc#status') == 1 end },
+          { python_venv, cond = function() return vim.bo.filetype == 'python' end },
+          'encoding',
+          'fileformat',
+          'filetype',
+          { session_name },
+        },
+        --lualine_y = {'progress'},
+    lualine_y = {
+      { session_name, cond = function() return pcall(require, 'auto-session.lib') end },
+      'progress',
+    },
         lualine_z = {'location'}
       },
       inactive_sections = {
@@ -72,10 +136,10 @@ require("lualine").setup{
         lualine_x = {'location'},
         lualine_y = {},
         lualine_z = {}
-      }
-    },
+      },
   extensions = {
     'nerdtree' -- Enable the NERDTree extension
   }
 }
+
 

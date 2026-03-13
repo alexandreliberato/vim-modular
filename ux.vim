@@ -29,6 +29,7 @@ lua pcall(require,'extensions.ux.keymap')
 lua pcall(require,'extensions.ux.scrolling')
 lua pcall(require,'extensions.ux.diagnostics')
 lua pcall(require,'extensions.ux.find_and_replace')
+lua pcall(require,'extensions.ux.terminal')
 
 " load Telescope extensions
 lua pcall(function() require('telescope').load_extension('fzf') end)
@@ -36,11 +37,16 @@ lua pcall(function() require('telescope').load_extension('git_grep') end)
 lua pcall(function() require('telescope').load_extension('frecency') end)
 lua pcall(function() require('telescope').load_extension('coc') end)
 "lua pcall(function() require('telescope').load_extension('noice') end)
+" not usable yet
+lua pcall(function() require('telescope').load_extension('notify') end)
 lua pcall(function() require('telescope').load_extension('live_grep_args') end)
 
 
 " ----------------------------------------------------
 " Level 01 - Very High Impact
+
+" Set the cursor in the middle of the screen
+set scrolloff=999
 
 " vim: show numbers
 set number
@@ -49,9 +55,64 @@ set number
 " OLD:
 " command! BD bn | bd #
 
-" NEW: go to last buffer (#), then delete the previous one
-command! BD if bufnr('#') > 0 && buflisted(bufnr('#')) | execute 'b# | bd #' | else | bnext | endif
+" Track the two most recent buffers so <leader>bb always jumps to the last *living* buffer.
+let g:buffer_history = []
+let g:deleting_buffer = 0
 
+augroup TrackLastBuffer
+  autocmd!
+  autocmd BufEnter * call s:TrackBuffer()
+augroup END
+
+function! s:TrackBuffer() abort
+  " Skip tracking during buffer deletion and for non-file buffers
+  if g:deleting_buffer | return | endif
+  let l:buf = bufnr('%')
+  if !buflisted(l:buf) | return | endif
+  " Remove this buffer from history if already present, then prepend it
+  call filter(g:buffer_history, 'v:val != ' . l:buf)
+  call insert(g:buffer_history, l:buf, 0)
+  " Keep only last 10 entries
+  if len(g:buffer_history) > 10
+    let g:buffer_history = g:buffer_history[:9]
+  endif
+endfunction
+
+function! s:GoToLastBuffer() abort
+  " Find the first buffer in history that is still listed and not the current one
+  for l:buf in g:buffer_history
+    if buflisted(l:buf) && l:buf != bufnr('%')
+      execute 'buffer' l:buf
+      return
+    endif
+  endfor
+  echo "No previous buffer to switch to"
+endfunction
+command! GoLastBuffer call s:GoToLastBuffer()
+
+function! s:SmartBufferDelete() abort
+  let l:curbuf = bufnr('%')
+  let g:deleting_buffer = 1
+  " Find the best buffer to switch to before deleting
+  let l:target = -1
+  for l:buf in g:buffer_history
+    if buflisted(l:buf) && l:buf != l:curbuf
+      let l:target = l:buf
+      break
+    endif
+  endfor
+  if l:target != -1
+    execute 'buffer' l:target
+    execute 'bdelete' l:curbuf
+  else
+    execute 'bdelete' l:curbuf
+    execute 'Startify'
+  endif
+  " Remove the deleted buffer from history
+  call filter(g:buffer_history, 'v:val != ' . l:curbuf)
+  let g:deleting_buffer = 0
+endfunction
+command! BD call s:SmartBufferDelete()
 
 
 " ----------------------------------------------------
@@ -122,18 +183,79 @@ nnoremap <silent> <leader>D :CocList diagnostics<CR>
 " NERDTree: a filer explorer
 "
 
+" Compute project root (prefer radix.nvim/git root, fallback to current file dir)
+let g:debug_project_root = get(g:, 'debug_project_root', 0)
+
+function! s:DebugProjectRoot(msg) abort
+  if get(g:, 'debug_project_root', 0)
+    " Avoid spamming floating notifications during startup unless explicitly enabled.
+    call v:lua.vim.notify(a:msg)
+  endif
+endfunction
+
+function! ProjectGitRoot() abort
+  " Start from current file directory when possible
+  let l:start = expand('%:p:h')
+  if empty(l:start)
+    let l:start = getcwd()
+  endif
+
+  " Cache to avoid repeated root computation (common during startup/autocmd bursts)
+  if exists('s:cached_project_root_start')
+        \ && s:cached_project_root_start ==# l:start
+        \ && exists('s:cached_project_root')
+        \ && type(s:cached_project_root) == v:t_string
+        \ && !empty(s:cached_project_root)
+    return s:cached_project_root
+  endif
+
+  " Try radix.nvim first (uses git root + other patterns)
+  try
+    let l:root = luaeval("require('radix').get_root_dir(_A)", l:start)
+    if type(l:root) == v:t_string && !empty(l:root)
+      let s:cached_project_root_start = l:start
+      let s:cached_project_root = l:root
+      return l:root
+    endif
+  catch
+  endtry
+
+  " Fallback: plain git from that directory
+  let l:cmd = 'cd ' . shellescape(l:start) . ' && git rev-parse --show-toplevel'
+  let l:git_root = systemlist(l:cmd)[0]
+  if v:shell_error == 0 && !empty(l:git_root)
+    let s:cached_project_root_start = l:start
+    let s:cached_project_root = l:git_root
+    return l:git_root
+  endif
+
+  " Last resort: starting directory
+  let s:cached_project_root_start = l:start
+  let s:cached_project_root = l:start
+  return l:start
+endfunction
+
+function! OpenNERDTreeAtProjectRoot() abort
+  let l:root = ProjectGitRoot()
+  execute 'NERDTree' fnameescape(l:root)
+endfunction
+
+" Reveal file
+function! NerdTreeToggleFind()
+  if filereadable(expand('%'))
+    " Open rooted at git root, then reveal current file
+    "call OpenNERDTreeAtProjectRoot()
+    NERDTreeFind
+  else
+    " No file, just open at git root
+    call OpenNERDTreeAtProjectRoot()
+  endif
+endfunction
+
+nnoremap <silent> <leader>er :call NerdTreeToggleFind()<CR>
+
 " Width
 let g:NERDTreeWinSize=45
-
-" Start NERDTree. If a file is specified, move the cursor to its window.
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
-
-" OR
-
-" Start NERDTree, unless a file or session is specified, eg. vim -S session_file.vim.
-"autocmd StdinReadPre * let s:std_in=1
-"autocmd VimEnter * if argc() == 0 && !exists('s:std_in') && v:this_session == '' | NERDTree | endif
 
 " Hide character '~' 
 let NERDTreeIgnore = ['\.til$', '\~$', '\.swp$']
@@ -141,18 +263,6 @@ let NERDTreeIgnore = ['\.til$', '\~$', '\.swp$']
 " Respect Vim's built-in wildignore settings as well
 set wildignore+=*.til,*.swp,*~
 let NERDTreeRespectWildIgnore=1
-
-" Reveal file
-function! NerdTreeToggleFind()
-  if filereadable(expand('%'))
-    NERDTreeFind
-  else
-    NERDTree
-  endif
-endfunction
-
-" Reveals/Selects file 
-nnoremap <silent> <leader>er :call NerdTreeToggleFind()<CR>
 
 " Filename in statusline 
 let g:NERDTreeStatusline = "%{exists('g:NERDTreeFileNode')&&" .
@@ -170,8 +280,46 @@ autocmd FileType nerdtree nmap <buffer> l o
 "au CursorHold * if exists("t:NerdTreeBufName") | call function('s:refreshRoot')() | endif
 
 " If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
-autocmd BufEnter * if winnr() == winnr('h') && bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
-    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+augroup NerdTreeWindowGuard
+  autocmd!
+  autocmd BufEnter * call <SID>NerdTreeWindowGuard()
+augroup END
+
+function! s:NerdTreeWindowGuard() abort
+  " Guard against recursion and avoid acting on plugin/floating windows
+  if exists('s:nt_guard_running')
+    return
+  endif
+  if winnr('$') <= 1
+    return
+  endif
+  if &buftype !=# ''
+    return
+  endif
+  if &filetype ==# 'notify' || &filetype ==# 'TelescopePrompt'
+    return
+  endif
+
+  if bufname('#') !~# '^NERD_tree_\d\+$'
+    return
+  endif
+  if bufname('%') =~# '^NERD_tree_\d\+$'
+    return
+  endif
+
+  let s:nt_guard_running = 1
+  try
+    let l:buf = bufnr('%')
+    " Restore NERDTree in the current window
+    silent! buffer #
+
+    " Move to a different window and open the intended buffer there
+    wincmd w
+    execute 'buffer ' . l:buf
+  finally
+    unlet s:nt_guard_running
+  endtry
+endfunction
 
 " Hide message: Please wait caching large directory
 let g:NERDTreeNotificationThreshold = 500
@@ -363,7 +511,7 @@ set wildmenu wildmode=full
 nnoremap <silent> <leader>ba :BufferCloseAllButCurrent<CR>
 
 " toggle buffer (switch between current and last buffer)
-nnoremap <silent> <leader>bb <C-^>
+nnoremap <silent> <leader>bb :GoLastBuffer<CR>
 
 " go to next buffer
 nnoremap <silent> <leader>bn :bn<CR>
@@ -571,6 +719,8 @@ function! s:SmartQuit() abort
   endif
 
   " 2) Verifica se existe ao menos uma janela NERDTree aberta
+  " TODO: se não for o buffer de código(.py, .go, etc) fecho apenas o buffer
+  " atual que pode ser um plugin.
   let l:has_nerdtree = bufwinnr('NERD_tree_1') > 0
   if !l:has_nerdtree
     " Não tem NERDTree aberto -> fecha o Neovim inteiro
@@ -598,7 +748,102 @@ command! SmartQuit call <SID>SmartQuit()
 cnoreabbrev <expr> q (getcmdtype() ==# ':' && getcmdline() ==# 'q') ? 'SmartQuit' : 'q'
 
 
-" Start NERDTree and put the cursor back in the other window.
-autocmd VimEnter * NERDTree | wincmd p
+" Start NERDTree and put the cursor back in the other window
+autocmd VimEnter *
+      \ if argc() == 0 && !exists('s:std_in') && v:this_session ==# '' |
+      \   call OpenNERDTreeAtProjectRoot() |
+      \   wincmd p |
+      \ endif
 
 let g:NERDTreeChDirMode = 0
+
+" After loading a session, ensure NERDTree is open at project root, but keep
+" focus on the main code window.
+function! s:EnsureNerdTreeAtRootAndFocusFile() abort
+  " Debounce/guard: auto-session can trigger multiple events during startup.
+  if exists('s:ensure_nerdtree_running')
+    return
+  endif
+  let s:ensure_nerdtree_running = 1
+  try
+  " If cursor is currently in NERDTree, move to another window first.
+  if s:IsNerdTreeBuf(bufname('%')) && winnr('$') > 1
+    wincmd p
+  endif
+
+  " Remember the current (code) window and buffer using stable IDs.
+  let l:code_winid = win_getid()
+  let l:code_bufnr = bufnr('%')
+
+  " Open or re-root NERDTree at the project git root.
+  call OpenNERDTreeAtProjectRoot()
+
+  " Go back to the code window (window numbers may have changed).
+  call win_gotoid(l:code_winid)
+
+  " Reveal the current file inside NERDTree, if this buffer is a real file.
+  if buflisted(l:code_bufnr)
+    execute 'buffer ' . l:code_bufnr
+    if filereadable(expand('%'))
+      NERDTreeFind
+    endif
+  endif
+
+  " Finally, ensure focus stays on the code window.
+  call win_gotoid(l:code_winid)
+  finally
+    unlet s:ensure_nerdtree_running
+  endtry
+endfunction
+
+augroup AutoSessionFocus
+  autocmd!
+  autocmd SessionLoadPost * call <SID>EnsureNerdTreeAtRootAndFocusFile()
+  autocmd User AutoSessionRestorePost * call <SID>EnsureNerdTreeAtRootAndFocusFile()
+augroup END
+
+" reveal the file and goes back to the root of the project simulating a manual directory change
+function! NerdTreeRevealWithoutReroot() abort
+  let l:project_root = ProjectGitRoot()
+  " if nerd tree is open
+  if exists("t:NerdTreeBufName") && bufwinnr(t:NerdTreeBufName) > 0
+    if filereadable(expand('%'))
+      NERDTreeFind
+      " Go to NERDTree window
+      exec bufwinnr(t:NerdTreeBufName) . 'wincmd w'
+      
+      " Move up and expand until project root is found or at root
+      let l:max_up = 50
+      while l:max_up > 0
+        let l:curdir = get(b:, 'NERDTreeRoot', '')
+
+        if l:curdir ==# l:project_root || l:curdir ==# ''
+          break
+        endif
+        normal! h
+        normal! o
+        let l:max_up -= 1
+      endwhile
+      wincmd p
+    endif
+    return
+  endif
+
+  NERDTree
+  if filereadable(expand('%'))
+    NERDTreeFind
+    exec bufwinnr(t:NerdTreeBufName) . 'wincmd w'
+    let l:max_up = 50
+    while l:max_up > 0
+      let l:curdir = get(b:, 'NERDTreeRoot', '')
+      if l:curdir ==# l:project_root || l:curdir ==# ''
+        break
+      endif
+      normal! h
+      normal! o
+      let l:max_up -= 1
+    endwhile
+    wincmd p
+  endif
+endfunction
+

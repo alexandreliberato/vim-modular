@@ -76,18 +76,23 @@ let g:go_fmt_command = "goimports"
 " Debug
 "
 
+" UI
+nnoremap <F1> :lua require("dapui").open()
+nnoremap <F2> :lua require("dapui").close()
+nnoremap <F3> :lua require("dapui").toggle()
+
 " Set Breakpoint
-nnoremap <F4> :GoDebugBreakpoint<CR>
+nnoremap <F4> :DapToggleBreakpoint<CR>
 " Start
-nnoremap <F5> :GoDebugStart<CR>
+nnoremap <F5> :DapNew<CR>
 " Continue
-nnoremap <F6> :GoDebugContinue<CR>
-" Step
-nnoremap <F7> :GoDebugStep<CR>
-" Step out
-nnoremap <F8> :GoDebugStepOut<CR>
-" Next
-nnoremap <F9> :GoDebugNext<CR>
+nnoremap <F6> :DapContinue<CR>
+" Step over
+nnoremap <F7> :DapStepOver<CR>
+" Step into
+nnoremap <F8> :DapStepInto<CR>
+" Start test nearest debug
+nnoremap <F9> :lua require('dap-go').debug_test()<CR>
 
 "
 " Navigation

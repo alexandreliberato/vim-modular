@@ -40,7 +40,7 @@ require'barbar'.setup {
   -- Hide inactive buffers and file extensions. Other options are `alternate`, `current`, and `visible`.
   hide = {extensions = false, inactive = false},
 
-  -- ENable highlighting alternate buffers
+  -- Enable highlighting alternate buffers
   highlight_alternate = true,
 
   -- Disable highlighting file icons in inactive buffers
@@ -199,3 +199,4 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 })
 
 vim.schedule(apply_barbar_highlights)
+

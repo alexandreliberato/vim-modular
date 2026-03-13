@@ -11,7 +11,7 @@
     },
     "golang": {
       "command": "gopls",
-      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "rootPatterns": [".git/"],
       "filetypes": ["go"],
       "initializationOptions": {
         "usePlaceholders": true,

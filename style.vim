@@ -52,6 +52,7 @@ autocmd BufWinEnter,Filetype go      ++nested colorscheme blue
 autocmd FileType go highlight MatchParen cterm=underline ctermbg=NONE ctermfg=NONE gui=underline guibg=NONE guifg=NONE
 autocmd BufWinEnter,Filetype vim     ++nested colorscheme peachpuff
 autocmd BufWinEnter,Filetype lua     ++nested colorscheme peachpuff
+autocmd BufWinEnter,Filetype markdown ++nested colorscheme elflord 
 autocmd BufWinEnter,Filetype elixir  ++nested colorscheme rose-pine
 
 " reload CoC colors after colorscheme change
