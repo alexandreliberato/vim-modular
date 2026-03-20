@@ -2,6 +2,7 @@
 
 ## Logs
 :messages, :CocInfo, or CocOpenLog
+
 ## Verify if a key binding is overwritten
 :verbose key
 
@@ -16,3 +17,10 @@ or
 ## Mapping is not working
 - Verify source order
 - Verify mapping
+
+## Verify if a plugin is loaded
+- echo exists('g:loaded_fugitive')
+
+
+## Error logs
+cat ~/.local/state/nvim/log | tail -50

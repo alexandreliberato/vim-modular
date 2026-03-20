@@ -88,8 +88,8 @@ require("lualine").setup{
         },
         ignore_focus = {},
         always_divide_middle = true,
-        --always_show_tabline = true,
-        globalstatus = false,
+        always_show_tabline = true,
+        globalstatus = true,
     },
       sections = {
         lualine_a = {'mode'},

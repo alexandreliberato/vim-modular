@@ -18,18 +18,19 @@ let mapleader=" "
 
 " load ux extensions
 " lua pcall(require,'extensions.ux.buffers') " This line has been moved to init.vim
+" lua pcall(require,'extensions.ux.sessions') " This line has been moved to init.vim
 lua pcall(require,'extensions.ux.bottom_line')
 lua pcall(require,'extensions.ux.search')
 lua pcall(require,'extensions.ux.diagrams')
 lua pcall(require,'extensions.ux.git')
 lua pcall(require,'extensions.ux.autocomplete')
-lua pcall(require,'extensions.ux.sessions')
 lua pcall(require,'extensions.ux.context')
 lua pcall(require,'extensions.ux.keymap')
 lua pcall(require,'extensions.ux.scrolling')
 lua pcall(require,'extensions.ux.diagnostics')
 lua pcall(require,'extensions.ux.find_and_replace')
 lua pcall(require,'extensions.ux.terminal')
+lua pcall(require,'extensions.ux.search_in_file')
 
 " load Telescope extensions
 lua pcall(function() require('telescope').load_extension('fzf') end)
@@ -45,8 +46,25 @@ lua pcall(function() require('telescope').load_extension('live_grep_args') end)
 " ----------------------------------------------------
 " Level 01 - Very High Impact
 
+" CENTER LINE ALWAYS: without plugin
+" Avoids updating the screen before commands are completed
+"set lazyredraw
+
+" Remap navigation commands to center view on cursor using zz
+" nnoremap <C-U> 11kzz
+" nnoremap <C-D> 11jzz
+" nnoremap j jzz
+" nnoremap k kzz
+" nnoremap # #zz
+" nnoremap * *zz
+" nnoremap n nzz
+" nnoremap N Nzz
+
 " Set the cursor in the middle of the screen
 set scrolloff=999
+" END ----------------
+
+" ---
 
 " vim: show numbers
 set number
@@ -120,8 +138,9 @@ command! BD call s:SmartBufferDelete()
 
 "
 " COPILOT: CHAT
-" 
-nnoremap <silent> <leader>c :CopilotChatToggle<CR>
+" Changed from <leader>c to <leader>cc to avoid conflicts with register commands (e.g., "cy, "ay, etc.)
+"
+nnoremap <silent> <leader>cc :CopilotChatToggle<CR>
 
 "
 " VIM
@@ -131,10 +150,6 @@ nnoremap <silent> <leader>c :CopilotChatToggle<CR>
 nnoremap <silent> <F5> :windo normal! j<CR>
 nnoremap <silent> <F6> :windo normal! k<CR>
 
-
-" improve scrolling:
-" this options makes it so that the buffer starts scrolling earlier to always show 8 lines above or under the cursor.
-set scrolloff=8
 
 " reload vim config
 nnoremap <silent> <leader>vs :source $HOME/.config/nvim/init.vim<CR>
@@ -747,13 +762,8 @@ command! SmartQuit call <SID>SmartQuit()
 " Se o usuário digitou exatamente :q, troca por :SmartQuit
 cnoreabbrev <expr> q (getcmdtype() ==# ':' && getcmdline() ==# 'q') ? 'SmartQuit' : 'q'
 
-
-" Start NERDTree and put the cursor back in the other window
-autocmd VimEnter *
-      \ if argc() == 0 && !exists('s:std_in') && v:this_session ==# '' |
-      \   call OpenNERDTreeAtProjectRoot() |
-      \   wincmd p |
-      \ endif
+" NOTE: NERDTree opening on startup is now handled by sessions.lua
+" to properly handle session restoration.
 
 let g:NERDTreeChDirMode = 0
 
@@ -798,8 +808,8 @@ endfunction
 
 augroup AutoSessionFocus
   autocmd!
-  autocmd SessionLoadPost * call <SID>EnsureNerdTreeAtRootAndFocusFile()
-  autocmd User AutoSessionRestorePost * call <SID>EnsureNerdTreeAtRootAndFocusFile()
+  autocmd SessionLoadPost * let g:session_restored = 1 | call <SID>EnsureNerdTreeAtRootAndFocusFile()
+  autocmd User AutoSessionRestorePost * let g:session_restored = 1 | call <SID>EnsureNerdTreeAtRootAndFocusFile()
 augroup END
 
 " reveal the file and goes back to the root of the project simulating a manual directory change

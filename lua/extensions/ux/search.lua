@@ -53,6 +53,7 @@ end
 
 require('telescope').setup{
   extensions = {
+    -- Grep
     live_grep_args = {
       auto_quoting = true,
       layout_strategy = 'vertical',
@@ -66,6 +67,7 @@ require('telescope').setup{
       end,
       cwd = root_dir,
     },
+    -- COC
     coc = {
         prefer_locations = false, -- always use Telescope locations to preview definitions/declarations/implementations etc
         push_cursor_on_edit = true, -- save the cursor position to jump back in the future
@@ -134,7 +136,18 @@ require('telescope').setup{
       "*/mocks/",
       "/mocks/",
       "/mocks/.go"
-     }
+     },
+    -- Git Fugitive
+    -- git_bcommits = {
+    --   -- exibe data/hora no formato personalizado
+    --   git_command = {
+    --     "git",
+    --     "log",
+    --     "--pretty=format:%h (%ci) %s",
+    --     "--abbrev-commit",
+    --     "--follow"
+    --   },
+    -- },
   },
 }
 

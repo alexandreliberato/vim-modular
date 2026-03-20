@@ -56,7 +56,8 @@ Plug 'tveskag/nvim-blame-line'
 "  Context: Plugins
 Plug 'https://github.com/nvim-treesitter/nvim-treesitter-context'
 
-
-
 " Keymap navigation
 Plug 'https://github.com/folke/which-key.nvim'
+
+" Flash: Better and faster code navigation
+Plug 'folke/flash.nvim'

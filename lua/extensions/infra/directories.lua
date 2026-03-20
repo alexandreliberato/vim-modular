@@ -14,4 +14,4 @@ require("radix").setup({
 
     -- if false a notification will be shown when changing the cwd
     silent = true
-}
+})

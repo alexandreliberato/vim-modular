@@ -4,6 +4,9 @@
 " optimize loading plugins
 lua vim.loader.enable()
 
+" Sessions: Restore session on VimEnter (MUST be before plug#begin)
+lua pcall(require,'extensions.ux.sessions')
+
 " -----------------------------------------------
 "  INSTALL PLUGINS
 call plug#begin('~/.local/share/nvim/plugged')
@@ -28,6 +31,9 @@ call plug#end()
 " Notifications UI (required for `:Telescope notify` history)
 lua pcall(require,'extensions.infra.notify')
 
+" Treesitter: Syntax highlighting and indentation
+lua pcall(require,'extensions.infra.treesitter')
+
 " Noice: Improved logging
 "lua pcall(require,'extensions.infra.logger')
 
@@ -35,7 +41,7 @@ lua pcall(require,'extensions.infra.notify')
 " This ensures it's ready before any autocommands use it.
 lua pcall(require,'extensions.ux.buffers')
 
-" copilot suggestions
+" Copilot suggestions
 "lua pcall(require,'extensions.infra.copilot')
 
 " Project root directory
@@ -46,6 +52,7 @@ lua pcall(require,'extensions.infra.directories')
 source $HOME/.config/nvim/languages.vim
 
 lua pcall(require,'postgresql.postgres_lsp')
+lua pcall(require,'golang.ux')
 
 " Sleep: ensure everything is ready to be configured and used
 call system("execute sleep 0.2")
@@ -75,14 +82,20 @@ lua require("dapui").setup()
 " CONFIGURE markdown plugin
 " TODO
 
-" Copilot chat
-lua require("CopilotChat").setup()
+" Copilot chat: Configure to avoid conflicts with Vim registers
+lua << EOF
+require("CopilotChat").setup({
+  -- Use 'gy' prefix instead of 'y' to avoid conflicts with Vim registers
+  -- Default selection behavior can interfere with "y register
+  selection = 'unnamed',  -- Use unnamed register instead of visual selection
+})
+EOF
 
 
 " Create a single startup function to run after everything is loaded.
 function! s:FinalStartup()
-  " 1. Open NERDTree if no files were provided.
-  if argc() == 0 && !exists("s:std_in")
+  " 1. Open NERDTree only if no session was restored and no files were provided.
+  if argc() == 0 && !exists("s:std_in") && !exists("g:session_restored")
     call OpenNERDTreeAtProjectRoot()
   endif
 

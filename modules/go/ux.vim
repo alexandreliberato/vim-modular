@@ -107,8 +107,13 @@ function! s:GoRefsTelescope()
   call timer_start(180, { -> execute('lclose | Telescope loclist') })
 endfunction
 
-" Go to references
+" Referrers --- (start)
+
+" go to references
 autocmd FileType go nnoremap <silent><buffer> <leader>r :call <SID>GoRefsTelescope()<CR>
+
+" (end) ---
+
 
 " Go implements -> Telescope (async safe)
 function! s:GoImplTelescope()
