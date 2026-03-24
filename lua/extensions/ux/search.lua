@@ -2,8 +2,6 @@
 -- SEARCH CONFIG  --
 -- -------------- --
 
--- ! NOT WORKING, USING search.vim
-
 -- MENU
 -- - File Search 
 -- - Content Search
@@ -176,6 +174,14 @@ vim.keymap.set('n','<leader>s', function()
     search_dirs = { root_dir }, -- keep your git-root restriction
   })
 end, { desc='Telescope Search text (args)' })
+
+-- Search word under cursor
+vim.keymap.set('n', '<leader>sw', function()
+    require('telescope.builtin').grep_string({ 
+        search_dirs = { root_dir }, -- keep your git-root restriction,
+        search = vim.fn.expand("<cword>") 
+    })
+end, { desc = "Search word under cursor (Telescope)" })
 
 -- Key mapping to open comparison in two panels
 vim.keymap.set('n', '<leader>vh', function()

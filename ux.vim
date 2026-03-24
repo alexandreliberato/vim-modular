@@ -376,7 +376,14 @@ nnoremap <silent> <leader>h :call ToggleHiddenAll()<CR>
 
 
 " ----------------------------------------------------
-" Others
+" Level 3: Others
+
+
+" Content Search (dynamic args) + current word
+" " not working
+"autocmd FileType md nnoremap <Leader>as :Telescope grep_string<CR>
+"autocmd FileType yaml nnoremap <Leader>as :Telescope grep_string<CR>
+"autocmd FileType yml nnoremap <Leader>as :Telescope grep_string<CR>
 
 " enable spell checking
 " commands:

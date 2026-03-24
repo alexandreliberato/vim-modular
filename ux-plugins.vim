@@ -60,4 +60,10 @@ Plug 'https://github.com/nvim-treesitter/nvim-treesitter-context'
 Plug 'https://github.com/folke/which-key.nvim'
 
 " Flash: Better and faster code navigation
-Plug 'folke/flash.nvim'
+" NOT WORKING
+"Plug 'folke/flash.nvim'
+
+
+" Better inline diagnostic of problems
+" NOT WORKING
+" Plug 'rachartier/tiny-inline-diagnostic.nvim'
