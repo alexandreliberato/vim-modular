@@ -1,7 +1,7 @@
 -- =========================================================================
 -- TREESITTER CONFIGURATION
 
-local ok, configs = pcall(require, 'nvim-treesitter.configs')
+local ok, configs = pcall(require, 'nvim-treesitter.config')
 if not ok then
   vim.notify('nvim-treesitter not available. Install with :PlugInstall', vim.log.levels.WARN)
   return

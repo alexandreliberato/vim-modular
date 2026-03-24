@@ -73,6 +73,10 @@ set number
 " OLD:
 " command! BD bn | bd #
 
+" Keep cursor centered even at the end of the file
+nnoremap j jzz
+nnoremap k kzz
+
 " Track the two most recent buffers so <leader>bb always jumps to the last *living* buffer.
 let g:buffer_history = []
 let g:deleting_buffer = 0
@@ -377,13 +381,6 @@ nnoremap <silent> <leader>h :call ToggleHiddenAll()<CR>
 
 " ----------------------------------------------------
 " Level 3: Others
-
-
-" Content Search (dynamic args) + current word
-" " not working
-"autocmd FileType md nnoremap <Leader>as :Telescope grep_string<CR>
-"autocmd FileType yaml nnoremap <Leader>as :Telescope grep_string<CR>
-"autocmd FileType yml nnoremap <Leader>as :Telescope grep_string<CR>
 
 " enable spell checking
 " commands:
