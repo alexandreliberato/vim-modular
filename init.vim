@@ -34,6 +34,9 @@ lua pcall(require,'extensions.infra.notify')
 " Treesitter: Syntax highlighting and indentation
 lua pcall(require,'extensions.infra.treesitter')
 
+" Filetypes: Set extra filetypes
+lua pcall(require,'extensions.infra.filetypes')
+
 " Noice: Improved logging
 "lua pcall(require,'extensions.infra.logger')
 

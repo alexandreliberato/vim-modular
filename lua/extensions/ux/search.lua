@@ -42,6 +42,7 @@ local function pick_non_nerdtree_win()
   return vim.api.nvim_get_current_win()
 end
 
+-- adds history using c-p
 local has_sqlite = pcall(require, 'sqlite')
 if not has_sqlite then
   vim.schedule(function()
@@ -120,6 +121,7 @@ require('telescope').setup{
       '--line-number',
       '--column',
       '--smart-case',
+      '--hidden', -- Include hidden files/directories (e.g., .github/)
       '--glob',
       '!**/vendor/**' -- This line excludes the vendor directory
     },

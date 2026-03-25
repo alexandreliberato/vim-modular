@@ -2109,3 +2109,17 @@ NewDomainMetrics
 searchs
 zug
 zg
+Mise
+cmake
+systemd
+hadolint
+dockerfile
+vint
+languagetool
+markdownlint
+shellcheck
+phpstan
+yamllint
+cmakelint
+NewNoopHTTPTelemetry
+NewNoopBatchPaymentsMetrics
