@@ -60,8 +60,26 @@ lua pcall(function() require('telescope').load_extension('live_grep_args') end)
 " nnoremap n nzz
 " nnoremap N Nzz
 
-" Set the cursor in the middle of the screen
-set scrolloff=999
+" CENTER LINE: Center line when using zz in last line.
+" ===========
+"
+" - Works even in insert mode
+
+" a) Every time you enter in insert mode the screen gets vertically centered.
+autocmd InsertEnter * norm zz
+
+" b) Keep cursor centered even at the end of the file
+nnoremap j jzz
+nnoremap k kzz
+
+" c) keep center after switch buffers
+augroup CenterOnSwitch
+  autocmd!
+  autocmd BufWinEnter * call timer_start(10, {-> execute('normal! zz')})
+augroup END
+
+" Using both (a) and (b) it works very well
+
 " END ----------------
 
 " ---
@@ -73,9 +91,6 @@ set number
 " OLD:
 " command! BD bn | bd #
 
-" Keep cursor centered even at the end of the file
-nnoremap j jzz
-nnoremap k kzz
 
 " Track the two most recent buffers so <leader>bb always jumps to the last *living* buffer.
 let g:buffer_history = []
