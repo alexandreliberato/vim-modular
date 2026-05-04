@@ -162,6 +162,24 @@ command! BD call s:SmartBufferDelete()
 nnoremap <silent> <leader>cc :CopilotChatToggle<CR>
 
 "
+" CLAUDE CODE
+"
+"Toggle Claude"
+nnoremap <silent> <leader>ac :ClaudeCode<cr> 
+" Focus Claude"
+nnoremap <silent> <leader>af :ClaudeCodeFocus<cr>
+" Resume Claude"
+nnoremap <silent> <leader>ar :ClaudeCode --resume<cr>
+" Continue Claude"
+nnoremap <silent> <leader>aC :ClaudeCode --continue<cr>
+" Select Claude model"
+nnoremap <silent> <leader>am :ClaudeCodeSelectModel<cr>
+" Add current buffer"
+nnoremap <silent> <leader>ab :ClaudeCodeAdd %<cr>
+" Send to Claude"
+nnoremap <silent> <leader>as :ClaudeCodeSend<cr>
+
+"
 " VIM
 "
 
@@ -397,6 +415,9 @@ nnoremap <silent> <leader>h :call ToggleHiddenAll()<CR>
 " ----------------------------------------------------
 " Level 3: Others
 
+" PlantUML keymaps
+nnoremap <silent> <leader>po :PlantumlOpen<cr>
+
 " enable spell checking
 " commands:
 "   zg  - adds to the dictionary
@@ -505,9 +526,9 @@ inoremap ;; <ESC>
 
 
 " navigate between errors
-map <C-n> :cnext<CR>
-map <C-m> :cprevious<CR>
-nnoremap <leader>a :cclose<CR>
+"map <C-n> :cnext<CR>
+"map <C-m> :cprevious<CR>
+"nnoremap <leader>a :cclose<CR>
 
 
 

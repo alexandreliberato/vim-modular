@@ -111,4 +111,6 @@ Plug 'ckipp01/stylua-nvim'
 " Generic linters: used for better spell:set scrolloff=10
 Plug 'mfussenegger/nvim-lint'
 
-
+" Claude Code 
+Plug 'folke/snacks.nvim' " dependency
+Plug 'coder/claudecode.nvim'

@@ -50,6 +50,12 @@ lua pcall(require,'extensions.ux.buffers')
 " Project root directory
 lua pcall(require,'extensions.infra.directories')
 
+" PlantUML
+lua pcall(require,'extensions.ux.diagrams')
+let g:plantuml_previewer#file_pattern = "*.pu,*.uml,*.plantuml,*.puml,*.iuml,*.md"
+let g:plantuml_previewer#debug_mode = 1
+
+
 " -----------------------------------------------
 " Run Language Extensions
 source $HOME/.config/nvim/languages.vim
@@ -93,6 +99,12 @@ require("CopilotChat").setup({
   selection = 'unnamed',  -- Use unnamed register instead of visual selection
 })
 EOF
+
+" Claude Code
+lua << EOF
+require("claudecode").setup()
+EOF
+
 
 
 " Create a single startup function to run after everything is loaded.

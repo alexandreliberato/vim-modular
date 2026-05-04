@@ -70,7 +70,7 @@ require('telescope').setup{
     coc = {
         prefer_locations = false, -- always use Telescope locations to preview definitions/declarations/implementations etc
         push_cursor_on_edit = true, -- save the cursor position to jump back in the future
-        timeout = 3000 -- timeout for coc commands   
+        timeout = 1000 -- timeout for coc commands   
     },
   },
   defaults = {
@@ -111,7 +111,8 @@ require('telescope').setup{
       "*/mocks/*.go",
       "*/mocks/",
       "/mocks/",
-      "/mocks/.go"
+      "/mocks/.go",
+      '!**/vendor/**' -- This line excludes the vendor directory
     },
     vimgrep_arguments = {
       'rg',
@@ -208,6 +209,7 @@ vim.keymap.set('n', '<leader>vh', function()
 end, { desc = 'Fugitive Compare with History (Live in Telescope)' })
 
 
+-- Diff current file with a specific commit
 vim.keymap.set('n','<leader>vd', function()
   builtin.git_bcommits({
     attach_mappings = function(_, map)
