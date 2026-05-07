@@ -66,7 +66,9 @@ lua pcall(function() require('telescope').load_extension('live_grep_args') end)
 " - Works even in insert mode
 
 " a) Every time you enter in insert mode the screen gets vertically centered.
-autocmd InsertEnter * norm zz
+"    Skip prompt/special buffers (e.g. telescope) where re-entering insert
+"    mode shifts the caret and corrupts typed input.
+autocmd InsertEnter * if &buftype ==# '' | execute "normal! zz" | endif
 
 " b) Keep cursor centered even at the end of the file
 nnoremap j jzz
@@ -75,7 +77,7 @@ nnoremap k kzz
 " c) keep center after switch buffers
 augroup CenterOnSwitch
   autocmd!
-  autocmd BufWinEnter * call timer_start(10, {-> execute('normal! zz')})
+  autocmd BufWinEnter * if &buftype ==# '' | call timer_start(10, {-> execute('normal! zz')}) | endif
 augroup END
 
 " Using both (a) and (b) it works very well
