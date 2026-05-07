@@ -508,6 +508,11 @@ set splitbelow
 " Enter automatically into the files directory
 "autocmd BufEnter * silent! lcd %:p:h
 
+" Automatically highlights current file on NerdTree without changing focus
+" from code
+" TODO
+
+
 " Automatically resize screens to be equally the same
 autocmd VimResized * wincmd =
 
@@ -543,9 +548,6 @@ nnoremap <silent> <leader>tb :TagbarToggle<CR>
 
 " toggle line numbers
 nnoremap <silent> <leader>n :set number! number?<CR>
-
-" toggle line wrap
-" nnoremap <silent> <leader>w :set wrap! wrap?<CR>
 
 " ----------------------------
 "                             " 

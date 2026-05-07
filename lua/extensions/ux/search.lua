@@ -106,13 +106,10 @@ require('telescope').setup{
       },
     },
     file_ignore_patterns = {
-      "node_modules",
-      "*_mock.go",
-      "*/mocks/*.go",
-      "*/mocks/",
+      "/node_modules/",
+      "_mock%.go$",
       "/mocks/",
-      "/mocks/.go",
-      '!**/vendor/**' -- This line excludes the vendor directory
+      '/vendor/' -- This line excludes the vendor directory
     },
     vimgrep_arguments = {
       'rg',
@@ -132,11 +129,9 @@ require('telescope').setup{
        search_dirs = { root_dir },
      },
      loclist = {
-      "*_mock.go",
-      "*/mocks/*.go",
-      "*/mocks/",
+      "_mock%.go$",
       "/mocks/",
-      "/mocks/.go"
+      "/vendor/"
      },
     -- Git Fugitive
     -- git_bcommits = {
@@ -168,9 +163,6 @@ vim.keymap.set('n','<leader>f', builtin.git_files, { desc='Telescope Find Files'
 vim.keymap.set('n','<leader>b', builtin.buffers,    { desc='Telescope Buffers' })
 
 -- -----------------------------------------
--- Content Search
---vim.keymap.set('n','<leader>s', builtin.live_grep_args, { desc='Telescope Search text' })
-
 -- Content Search (dynamic args)
 vim.keymap.set('n','<leader>s', function()
   require('telescope').extensions.live_grep_args.live_grep_args({
@@ -179,7 +171,7 @@ vim.keymap.set('n','<leader>s', function()
 end, { desc='Telescope Search text (args)' })
 
 -- Search word under cursor
-vim.keymap.set('n', '<leader>sw', function()
+vim.keymap.set('n', '<leader>S', function()
     require('telescope.builtin').grep_string({ 
         search_dirs = { root_dir }, -- keep your git-root restriction,
         search = vim.fn.expand("<cword>") 

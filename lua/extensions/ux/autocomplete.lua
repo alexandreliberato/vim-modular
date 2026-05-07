@@ -45,7 +45,7 @@ require('lspkind').init({
       Constant = "󰏿",
       Struct = "󰙅",
       Event = "",
-      Operator = "󰆕",
+      Olua print(vim.inspect(vim.api.nvim_get_runtime_file('parser/lua.so', true)))   perator = "󰆕",
       TypeParameter = "",
     },
 })
