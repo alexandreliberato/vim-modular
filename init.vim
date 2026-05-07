@@ -102,7 +102,13 @@ EOF
 
 " Claude Code
 lua << EOF
-require("claudecode").setup()
+require("claudecode").setup({
+  diff_opts = {
+    layout = "vertical",       -- original | proposed side-by-side
+    open_in_new_tab = false,   -- use the current tab so the diff lands in the code area
+  },
+})
+require("patches.claudecode_diff")
 EOF
 
 

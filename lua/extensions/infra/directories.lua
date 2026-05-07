@@ -1,3 +1,5 @@
+-- Configures radix.nvim to auto-set the cwd to the nearest project root
+-- (detected by walking up from the current file until a `.git` is found).
 require("radix").setup({
     -- if false cwd will be left unchanged if no directory is found
     -- otherwise it uses the head of the starting path
