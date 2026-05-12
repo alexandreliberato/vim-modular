@@ -4,7 +4,7 @@
 
 require('neoscroll').setup({
   mappings = {                 -- Keys to be mapped to their corresponding default scrolling animation
-    '<C-u>', '<C-d>',
+    '<C-u>',
     '<C-b>', '<C-f>',
     '<C-y>', '<C-e>',
     'zt', 'zz', 'zb',
@@ -16,9 +16,18 @@ require('neoscroll').setup({
   duration_multiplier = 1.0,   -- Global duration multiplier
   easing = 'linear',           -- Default easing function
   pre_hook = nil,              -- Function to run before the scrolling animation starts
-  post_hook = nil,             -- Function to run after the scrolling animation ends
+  post_hook = function(info)   -- Re-center cursor line after scrolls flagged with info = 'center'
+    if info == 'center' then
+      vim.cmd('normal! zz')
+    end
+  end,
   performance_mode = false,    -- Disable "Performance Mode" on all buffers.
   ignored_events = {           -- Events ignored while scrolling
       'WinScrolled', 'CursorMoved'
   },
 })
+
+-- <C-d>: scroll half-page down and keep the cursor line centered
+vim.keymap.set({ 'n', 'x' }, '<C-d>', function()
+  require('neoscroll').ctrl_d({ duration = 100, info = 'center' })
+end, { silent = true })

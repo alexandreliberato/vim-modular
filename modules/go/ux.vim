@@ -98,13 +98,79 @@ nnoremap <F9> :lua require('dap-go').debug_test()<CR>
 " Navigation
 "
 
+" Helper: jump cursor to the enclosing Go function/method name using treesitter.
+" Returns true on success, false if no enclosing function was found.
+lua << EOF
+function _G.__goto_enclosing_go_func()
+  local node = vim.treesitter.get_node()
+  while node do
+    local t = node:type()
+    if t == 'function_declaration' or t == 'method_declaration' then
+      local name = node:field('name')[1]
+      if name then
+        local r, c = name:start()
+        vim.api.nvim_win_set_cursor(0, { r + 1, c })
+      end
+      return true
+    end
+    node = node:parent()
+  end
+  return false
+end
+EOF
+
 " Go references -> Telescope (async safe)
 function! s:GoRefsTelescope()
+  let l:cur_word = expand('<cword>')
+
+  " If cursor is not on an identifier (e.g. empty line, whitespace, punctuation),
+  " jump to the enclosing function's name so references resolve to that function.
+  if l:cur_word == '' || l:cur_word !~ '^\w\+$'
+    if !luaeval('_G.__goto_enclosing_go_func()')
+      echo "No enclosing function found"
+      return
+    endif
+  endif
+
+  " Capture invocation location to filter the declaration itself and its sibling test file.
+  let l:invoke_file = expand('%:p')
+  let l:invoke_line = line('.')
+
   silent GoReferrers
-  " Delay to allow vim-go/gopls to fill the location list
-  " After vim-go populates the location list it opens a loclist window.
-  " We schedule a small delay, close that window, then show Telescope's loclist picker.
-  call timer_start(180, { -> execute('lclose | Telescope loclist') })
+  " Delay to allow vim-go/gopls to fill the location list, then filter and show Telescope.
+  call timer_start(180, { -> s:FinishGoRefs(l:invoke_file, l:invoke_line) })
+endfunction
+
+function! s:FinishGoRefs(file, line) abort
+  lclose
+  call s:FilterGoRefs(a:file, a:line)
+  Telescope loclist
+endfunction
+
+" Drop the function's own declaration (same file+line as invocation) and any
+" entries from the sibling test file (foo.go <-> foo_test.go in same dir).
+function! s:FilterGoRefs(file, line) abort
+  let l:dir = fnamemodify(a:file, ':h')
+  let l:base = fnamemodify(a:file, ':t:r')
+  if l:base =~# '_test$'
+    let l:sibling = l:dir . '/' . substitute(l:base, '_test$', '', '') . '.go'
+  else
+    let l:sibling = l:dir . '/' . l:base . '_test.go'
+  endif
+
+  let l:filtered = []
+  for l:item in getloclist(0)
+    let l:path = l:item.bufnr > 0 ? fnamemodify(bufname(l:item.bufnr), ':p') : ''
+    if l:path ==# l:sibling
+      continue
+    endif
+    if l:path ==# a:file && l:item.lnum == a:line
+      continue
+    endif
+    call add(l:filtered, l:item)
+  endfor
+
+  call setloclist(0, l:filtered, 'r')
 endfunction
 
 " Referrers --- (start)
