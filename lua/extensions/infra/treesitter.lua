@@ -52,7 +52,6 @@ configs.setup({
       end
       return false
     end,
-    -- Use vim regex for vim files instead of treesitter
     additional_vim_regex_highlighting = true,
   },
 

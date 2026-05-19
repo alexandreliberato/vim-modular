@@ -420,13 +420,14 @@ nnoremap <silent> <leader>h :call ToggleHiddenAll()<CR>
 " PlantUML keymaps
 nnoremap <silent> <leader>po :PlantumlOpen<cr>
 
-" enable spell checking
+" spell checking — enabled only in prose filetypes
 " commands:
 "   zg  - adds to the dictionary
 "   zug - removes from the dictionary
 "   s[  - searchs for problems up
 "   ]s  - searchs for problems down
-set spell spelllang=en
+set spelllang=en,pt_br
+autocmd FileType markdown,gitcommit,text,tex,rst setlocal spell
 
 " The following can be commented out as they cause vim to behave a lot
 " differently from regular Vi. They are highly recommended though.
