@@ -52,6 +52,9 @@ lua pcall(require,'extensions.infra.directories')
 
 " PlantUML
 lua pcall(require,'extensions.ux.diagrams')
+
+" Linters (nvim-lint): plantuml -syntax, etc.
+lua pcall(require,'extensions.infra.lint')
 let g:plantuml_previewer#file_pattern = "*.pu,*.uml,*.plantuml,*.puml,*.iuml,*.md"
 let g:plantuml_previewer#debug_mode = 1
 

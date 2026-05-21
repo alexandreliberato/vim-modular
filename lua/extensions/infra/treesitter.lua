@@ -65,3 +65,28 @@ configs.setup({
     enable = false,
   },
 })
+
+-- Enable plantuml syntax (new nvim-treesitter main-branch API)
+vim.api.nvim_create_autocmd('User', {
+  pattern = 'TSUpdate',
+  callback = function()
+    require('nvim-treesitter.parsers').plantuml = {
+      install_info = {
+        url = 'https://github.com/qFioofa/tree-sitter-plantuml',
+        branch = 'main',
+        generate = true,
+        generate_from_json = false,
+        queries = 'queries',
+      },
+    }
+  end,
+})
+
+vim.filetype.add({
+  extension = {
+    puml = 'plantuml',
+    plantuml = 'plantuml',
+    iuml = 'plantuml',
+    pu = 'plantuml',
+  },
+})
